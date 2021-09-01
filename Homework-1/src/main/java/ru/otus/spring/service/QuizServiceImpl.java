@@ -4,6 +4,7 @@ import org.apache.commons.csv.*;
 import ru.otus.spring.dao.QuizDao;
 import ru.otus.spring.domain.*;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,8 +17,7 @@ public class QuizServiceImpl implements QuizService {
         this.dao = dao;
     }
 
-    @Override
-    public Quiz getQuiz() throws IOException {
+    public Quiz getQuizOld() throws IOException {
         File quizFile = dao.getQuizFile();
         List<Question> questions = new ArrayList<>();
         List<Answer> answers = new ArrayList<>();
@@ -32,7 +32,21 @@ public class QuizServiceImpl implements QuizService {
             }
             questions.add(new Question(question,answers));
         }
-
         return new Quiz(questions);
+    }
+
+    public Quiz getQuiz() throws IOException {
+        Quiz quiz = new Quiz();
+        File quizFile = dao.getQuizFile();
+        CSVParser csvRecords = CSVParser.parse(new FileReader(quizFile), CSVFormat.EXCEL.builder().setHeader().build());
+        for (CSVRecord csvRecord : csvRecords) {
+            Question question = new Question(csvRecord.get("Question"));
+            String[] csvAnswers = csvRecord.get("Answers").split("/");
+            for (String csvAnswer : csvAnswers) {
+                question.addAnswer(new Answer(csvAnswer));
+            }
+            quiz.addQuestion(question);
+        }
+        return quiz;
     }
 }
