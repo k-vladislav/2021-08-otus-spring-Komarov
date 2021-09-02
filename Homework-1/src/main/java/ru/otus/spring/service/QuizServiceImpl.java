@@ -17,6 +17,7 @@ public class QuizServiceImpl implements QuizService {
         this.dao = dao;
     }
 
+    @Deprecated
     public Quiz getQuizOld() throws IOException {
         File quizFile = dao.getQuizFile();
         List<Question> questions = new ArrayList<>();
@@ -35,6 +36,7 @@ public class QuizServiceImpl implements QuizService {
         return new Quiz(questions);
     }
 
+    @Override
     public Quiz getQuiz() throws IOException {
         Quiz quiz = new Quiz();
         File quizFile = dao.getQuizFile();
