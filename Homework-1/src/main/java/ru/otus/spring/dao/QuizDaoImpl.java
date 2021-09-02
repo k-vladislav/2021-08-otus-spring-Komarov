@@ -1,25 +1,22 @@
 package ru.otus.spring.dao;
 
+import org.springframework.core.io.ClassPathResource;
+
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.URL;
+import java.io.IOException;
 
 public class QuizDaoImpl implements QuizDao {
-    private final File quizFile;
+    private final String sourcePath;
 
-    public QuizDaoImpl(String sourcePath) throws FileNotFoundException {
-        URL resource = getClass().getResource(sourcePath);
-        if (resource!=null) {
-            quizFile=new File(resource.getPath());
-        } else {
-            throw new FileNotFoundException();
-        }
-
+    public QuizDaoImpl(String sourcePath) {
+        if (sourcePath == null) throw new NullPointerException();
+        this.sourcePath = sourcePath;
     }
 
     @Override
-    public File getQuizFile() {
-        return quizFile;
+    public File getQuizFile() throws IOException {
+        ClassPathResource resource = new ClassPathResource(sourcePath);
+        return resource.getFile();
     }
 }
 
