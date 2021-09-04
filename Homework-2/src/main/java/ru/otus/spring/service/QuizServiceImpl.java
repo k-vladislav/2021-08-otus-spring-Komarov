@@ -1,6 +1,9 @@
 package ru.otus.spring.service;
 
 import org.apache.commons.csv.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import ru.otus.spring.dao.QuizDao;
 import ru.otus.spring.domain.*;
 
@@ -8,9 +11,11 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Configuration
 public class QuizServiceImpl implements QuizService {
     private final QuizDao dao;
 
+    @Autowired
     public QuizServiceImpl(QuizDao dao) {
         this.dao = dao;
     }
