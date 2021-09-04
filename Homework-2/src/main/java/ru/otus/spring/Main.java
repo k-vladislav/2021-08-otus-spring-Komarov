@@ -1,14 +1,19 @@
 package ru.otus.spring;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import ru.otus.spring.domain.Quiz;
 import ru.otus.spring.service.QuizService;
 
-@ComponentScan
+import java.io.IOException;
+
 public class Main {
-    public static void main(String[] args)  {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Main.class);
+    public static void main(String[] args) throws IOException {
+        ApplicationContext context = new ClassPathXmlApplicationContext("spring-context.xml");
         QuizService quizService = context.getBean(QuizService.class);
-        quizService.startQuiz();
+        //Quiz quiz = quizService.getQuiz();
+        Quiz quiz = quizService.getQuizAsInputStream();
+        quiz.printQuiz();
+
     }
 }

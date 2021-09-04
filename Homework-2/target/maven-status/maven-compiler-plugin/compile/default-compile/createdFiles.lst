@@ -1,0 +1,8 @@
+ru\otus\spring\service\QuizServiceImpl.class
+ru\otus\spring\dao\QuizDao.class
+ru\otus\spring\service\QuizService.class
+ru\otus\spring\Main.class
+ru\otus\spring\domain\Answer.class
+ru\otus\spring\dao\QuizDaoImpl.class
+ru\otus\spring\domain\Quiz.class
+ru\otus\spring\domain\Question.class
