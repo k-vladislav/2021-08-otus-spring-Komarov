@@ -1,28 +1,23 @@
 package ru.otus.spring.service;
 
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
-import ru.otus.spring.config.AppConfig;
+import org.apache.commons.csv.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import ru.otus.spring.dao.QuizDao;
-import ru.otus.spring.domain.Answer;
-import ru.otus.spring.domain.Question;
-import ru.otus.spring.domain.Quiz;
-import ru.otus.spring.domain.User;
+import ru.otus.spring.domain.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Scanner;
 
+@Configuration
 public class QuizServiceCSV implements QuizService {
     private final QuizDao dao;
     private final Quiz quiz;
+    private User user;
     private int correctAnswers = 0;
-    private int correctAnswerRequired;
+    private final int CORRECT_ANSWERS_THRESHOLD = 5;
 
-
+    @Autowired
     public QuizServiceCSV(QuizDao dao) {
         this.dao = dao;
         quiz = new Quiz();
@@ -39,58 +34,36 @@ public class QuizServiceCSV implements QuizService {
             System.out.println("Enter your last name:");
             lastName = scanner.nextLine();
         }
-        User user = new User(firstName, lastName);
+        this.user = new User(firstName, lastName);
         System.out.println("User added: " + user);
     }
 
-    private void playQuiz() {
+    private void processQuiz() {
         addUser();
         loadQuiz();
         System.out.println("Start quiz!");
+        Scanner scanner = new Scanner(System.in);
+        int yourAnswer;
         for (Question question : quiz.getQuestions()) {
-            playQuestion(question);
+            question.display();
+            if (question.isCorrectAnswerAdded()) {
+                System.out.print("Your answer: ");
+                yourAnswer = scanner.nextInt();
+                System.out.println("Your input is " + yourAnswer + ", correct ID is " + question.getCorrectAnswerId());
+                if (yourAnswer == question.getCorrectAnswerId()) {
+                    correctAnswers++;
+                    System.out.println("Good! Score: " + correctAnswers);
+                }
+            } else {
+                System.out.println("Skip question as no correct answer added");
+            }
         }
         System.out.println("Quiz finished!");
     }
 
-    private void playQuestion(Question question) {
-        question.display();
-        if (question.isCorrectAnswerAdded()) {
-            processQuestion(question);
-        } else {
-            System.out.println("Skip question as no correct answer added");
-        }
-    }
-
-    private void processQuestion(Question question) {
-        Scanner scanner = new Scanner(System.in);
-        int yourAnswer;
-        String input;
-        boolean isInputValid;
-        do {
-            System.out.print("Your answer: ");
-            input = scanner.nextLine();
-            isInputValid = validateInput(question, input);
-        } while (!isInputValid);
-        yourAnswer = Integer.parseInt(input);
-        System.out.println("Your input is " + yourAnswer + ", correct ID is " + question.getCorrectAnswerId());
-        if (yourAnswer == question.getCorrectAnswerId()) {
-            correctAnswers++;
-            System.out.println("Good! Score: " + correctAnswers);
-        }
-    }
-
-    private boolean validateInput(Question question, String input) {
-        if (input.matches("[0-9]+")) {
-            int yourAnswer = Integer.parseInt(input);
-            return yourAnswer >= 1 && yourAnswer <= question.getAnswersCount();
-        }
-        return false;
-    }
-
     private void printResult() {
-        System.out.println("Score required: " + correctAnswerRequired + ", your score: " + correctAnswers);
-        if (correctAnswers >= correctAnswerRequired) {
+        System.out.println("Score required: " + CORRECT_ANSWERS_THRESHOLD + ", your score: " + correctAnswers);
+        if (correctAnswers >= CORRECT_ANSWERS_THRESHOLD) {
             System.out.println("Quiz passed!");
         } else {
             System.out.println("Quiz failed");
@@ -99,17 +72,18 @@ public class QuizServiceCSV implements QuizService {
 
     @Override
     public void startQuiz() {
-        playQuiz();
+        processQuiz();
         printResult();
     }
 
 
     private void loadQuiz() {
+        //todo initialize each time new?
         InputStream quizInputStream = dao.loadQuiz();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(quizInputStream));
         try (CSVParser csvRecords = CSVParser.parse(bufferedReader, CSVFormat.EXCEL.builder().setDelimiter(';').setHeader().build())) {
             for (CSVRecord csvRecord : csvRecords) {
-                String type = csvRecord.get("TYPE");
+                String type = csvRecord.get("TYPE"); //todo headerNames to configFile
                 int qID = Integer.parseInt(csvRecord.get("QID"));
                 int aID = Integer.parseInt(csvRecord.get("AID"));
                 String value = csvRecord.get("VALUE");
@@ -119,9 +93,6 @@ public class QuizServiceCSV implements QuizService {
                     quiz.addAnswer(new Answer(value, qID, aID));
                 }
             }
-            quiz.matchAnswers();
-            quiz.sort();
-            correctAnswerRequired = AppConfig.getRequiredScore();
         } catch (IOException e) {
             e.printStackTrace();
         }
