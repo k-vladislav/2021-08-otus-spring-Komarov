@@ -3,7 +3,7 @@ package ru.otus.spring.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Question {
+public class Question implements Comparable<Question>{
     private String questionValue;
     private final List<Answer> answers = new ArrayList<>();
     private int questionId, correctAnswerId;
@@ -82,5 +82,10 @@ public class Question {
 
     public int getCorrectAnswerId() {
         return correctAnswerId;
+    }
+
+    @Override
+    public int compareTo(Question o) {
+        return this.questionId-o.questionId;
     }
 }

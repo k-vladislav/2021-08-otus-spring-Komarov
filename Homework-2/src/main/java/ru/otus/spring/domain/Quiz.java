@@ -69,6 +69,13 @@ public class Quiz {
 
     @Override
     public String toString() {
-        return questions.toString() + System.lineSeparator();
+        return questions + System.lineSeparator();
+    }
+
+    public void sort() {
+        questions.sort(Question::compareTo);
+        for (Question question : questions) {
+            question.getAnswers().sort(Answer::compareTo);
+        }
     }
 }

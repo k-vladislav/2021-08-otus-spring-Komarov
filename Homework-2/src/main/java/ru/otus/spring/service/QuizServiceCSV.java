@@ -93,6 +93,7 @@ public class QuizServiceCSV implements QuizService {
                     quiz.addAnswer(new Answer(value, qID, aID));
                 }
             }
+            quiz.sort();
         } catch (IOException e) {
             e.printStackTrace();
         }
