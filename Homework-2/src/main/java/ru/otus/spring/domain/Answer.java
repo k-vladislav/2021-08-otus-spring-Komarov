@@ -1,6 +1,6 @@
 package ru.otus.spring.domain;
 
-public class Answer {
+public class Answer implements Comparable<Answer>{
     private String answer;
     private int questionId;
     private int answerId;
@@ -47,5 +47,10 @@ public class Answer {
     @Override
     public String toString() {
         return "    " + answerId + ". " + answer;
+    }
+
+    @Override
+    public int compareTo(Answer o) {
+        return this.answerId-o.answerId;
     }
 }
