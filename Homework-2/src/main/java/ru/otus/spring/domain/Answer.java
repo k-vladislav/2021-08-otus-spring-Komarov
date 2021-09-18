@@ -1,13 +1,9 @@
 package ru.otus.spring.domain;
 
-public class Answer implements Comparable<Answer>{
+public class Answer implements Comparable<Answer> {
     private String answer;
-    private int questionId;
-    private int answerId;
-
-    public Answer(String answer) {
-        this.answer = answer;
-    }
+    private final int questionId;
+    private final int answerId;
 
     /**
      * @param answerValue Answer
@@ -32,16 +28,8 @@ public class Answer implements Comparable<Answer>{
         return questionId;
     }
 
-    public void setQuestionId(int questionId) {
-        this.questionId = questionId;
-    }
-
     public int getAnswerId() {
         return answerId;
-    }
-
-    public void setAnswerId(int answerId) {
-        this.answerId = answerId;
     }
 
     @Override
@@ -51,6 +39,6 @@ public class Answer implements Comparable<Answer>{
 
     @Override
     public int compareTo(Answer o) {
-        return this.answerId-o.answerId;
+        return this.answerId - o.answerId;
     }
 }

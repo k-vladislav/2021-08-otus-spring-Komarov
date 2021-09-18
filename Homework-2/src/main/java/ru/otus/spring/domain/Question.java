@@ -3,19 +3,16 @@ package ru.otus.spring.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Question implements Comparable<Question>{
+public class Question implements Comparable<Question> {
     private String questionValue;
     private final List<Answer> answers = new ArrayList<>();
-    private int questionId, correctAnswerId;
+    private final int questionId;
+    private int correctAnswerId;
     private int answersCount;
     private boolean correctAnswerAdded = false;
 
     public void setQuestionValue(String questionValue) {
         this.questionValue = questionValue;
-    }
-
-    public void setQuestionId(int questionId) {
-        this.questionId = questionId;
     }
 
     public void setCorrectAnswerId(int correctAnswerId) {
@@ -38,7 +35,6 @@ public class Question implements Comparable<Question>{
     }
 
     public void addAnswer(Answer newAnswer) {
-        //todo sort answers by AID
         Answer matchedAnswer = answers.stream()
                 .filter(answer -> newAnswer.getAnswerId() == answer.getAnswerId())
                 .findFirst()
@@ -86,6 +82,6 @@ public class Question implements Comparable<Question>{
 
     @Override
     public int compareTo(Question o) {
-        return this.questionId-o.questionId;
+        return this.questionId - o.questionId;
     }
 }
