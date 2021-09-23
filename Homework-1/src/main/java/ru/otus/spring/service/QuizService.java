@@ -7,4 +7,5 @@ import java.io.IOException;
 
 public interface QuizService {
     Quiz getQuiz() throws IOException;
+    Quiz getQuizAsInputStream() throws IOException;
 }
