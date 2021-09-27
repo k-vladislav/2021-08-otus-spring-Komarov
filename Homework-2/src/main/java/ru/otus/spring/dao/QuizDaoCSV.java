@@ -10,8 +10,9 @@ public class QuizDaoCSV implements QuizDao {
     }
 
     @Override
-    public InputStream loadQuiz() {
+    public InputStream getQuiz() {
         return QuizDaoCSV.class.getResourceAsStream(sourcePath);
     }
+
 }
 

@@ -4,30 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Question implements Comparable<Question> {
-    private String questionValue;
+    private final String questionText;
     private final List<Answer> answers = new ArrayList<>();
     private final int questionId;
-    private int correctAnswerId;
-    private int answersCount;
+    private final int correctAnswerId;
     private boolean correctAnswerAdded = false;
 
-    public void setQuestionValue(String questionValue) {
-        this.questionValue = questionValue;
-    }
-
-    public void setCorrectAnswerId(int correctAnswerId) {
-        this.correctAnswerId = correctAnswerId;
-    }
-
-    /**
-     * @param questionValue   The question itself
-     * @param questionId      ID of question
-     * @param correctAnswerId expected ID of correct answer
-     */
     public Question(String questionValue, int questionId, int correctAnswerId) {
-        this.questionValue = questionValue;
+        this.questionText = questionValue;
         this.questionId = questionId;
         this.correctAnswerId = correctAnswerId;
+    }
+
+    public List<Answer> getAnswers() {
+        return answers;
     }
 
     public boolean isCorrectAnswerAdded() {
@@ -35,26 +25,17 @@ public class Question implements Comparable<Question> {
     }
 
     public void addAnswer(Answer newAnswer) {
-        Answer matchedAnswer = answers.stream()
-                .filter(answer -> newAnswer.getAnswerId() == answer.getAnswerId())
-                .findFirst()
-                .orElse(null);
-        if (matchedAnswer != null) {
-            matchedAnswer.setAnswer(newAnswer.getAnswerValue());
-        } else {
-            answers.add(newAnswer);
-            answersCount++;
-        }
+        answers.add(newAnswer);
         if (newAnswer.getAnswerId() == correctAnswerId) correctAnswerAdded = true;
     }
 
     public int getAnswersCount() {
-        return answersCount;
+        return answers.size();
     }
 
     @Override
     public String toString() {
-        return questionId + ". " + questionValue;
+        return questionId + ". " + questionText;
     }
 
     public void display() {
@@ -64,20 +45,16 @@ public class Question implements Comparable<Question> {
         }
     }
 
-    public String getQuestion() {
-        return questionValue;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers;
-    }
-
     public int getQuestionId() {
         return questionId;
     }
 
     public int getCorrectAnswerId() {
         return correctAnswerId;
+    }
+
+    public boolean isCorrectAnswer(int answer) {
+        return answer == correctAnswerId;
     }
 
     @Override

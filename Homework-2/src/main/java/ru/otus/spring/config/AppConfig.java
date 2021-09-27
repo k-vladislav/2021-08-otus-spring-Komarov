@@ -10,9 +10,8 @@ import ru.otus.spring.service.QuizService;
 import ru.otus.spring.service.QuizServiceCSV;
 
 @Configuration
-@PropertySource(value = "classpath:HW2.properties")
+@PropertySource(value = "HW2.properties")
 public class AppConfig {
-
     private static int requiredScore;
 
     @Value("${quiz.required.score}")
@@ -30,7 +29,7 @@ public class AppConfig {
     }
 
     @Bean
-    public QuizService quizService(QuizDao dao) {
+    public QuizService QuizService(QuizDaoCSV dao) {
         return new QuizServiceCSV(dao);
     }
 
