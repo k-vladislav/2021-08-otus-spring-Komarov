@@ -4,13 +4,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import ru.otus.spring.dao.QuizDao;
 import ru.otus.spring.dao.QuizDaoCSV;
 import ru.otus.spring.service.QuizService;
 import ru.otus.spring.service.QuizServiceCSV;
 
 @Configuration
-@PropertySource(value = "HW2.properties")
+@PropertySource(value = "classpath:HW2.properties")
 public class AppConfig {
     private static int requiredScore;
 
@@ -24,7 +23,7 @@ public class AppConfig {
     }
 
     @Bean
-    public QuizDao quizDao(@Value("${quiz.path}") String csvFilePath) {
+    public QuizDaoCSV quizDao(@Value("${quiz.path}") String csvFilePath) {
         return new QuizDaoCSV(csvFilePath);
     }
 

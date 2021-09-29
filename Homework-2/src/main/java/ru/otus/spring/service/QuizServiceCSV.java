@@ -26,14 +26,15 @@ public class QuizServiceCSV implements QuizService {
 
     @Override
     public Quiz getQuiz() {
-        readQnA();
+        InputStream quizIS = dao.getQuiz();
+        readQnA(quizIS);
         matchQnA();
         return Quiz.create(questions);
     }
 
-    private void readQnA() {
-        InputStream quizInputStream = dao.getQuiz();
-        BufferedReader br = new BufferedReader(new InputStreamReader(quizInputStream));
+    private void readQnA(InputStream quizIS) {
+       // InputStream quizInputStream = dao.getQuiz();
+        BufferedReader br = new BufferedReader(new InputStreamReader(quizIS));
         try (CSVParser csvRecords = CSVParser.parse(br, CSVFormat.EXCEL.builder().setDelimiter(';').setHeader().build())) {
             questions = new ArrayList<>();
             answers = new ArrayList<>();

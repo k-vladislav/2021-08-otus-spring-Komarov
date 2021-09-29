@@ -17,12 +17,6 @@ public class Quiz {
         return questions;
     }
 
-    @Override
-    public String toString() {
-        return questions + System.lineSeparator();
-    }
-
-
     private Quiz sort() {
         questions.sort(Question::compareTo);
         for (Question question : questions) {
