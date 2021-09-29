@@ -33,7 +33,6 @@ public class QuizServiceCSV implements QuizService {
     }
 
     private void readQnA(InputStream quizIS) {
-       // InputStream quizInputStream = dao.getQuiz();
         BufferedReader br = new BufferedReader(new InputStreamReader(quizIS));
         try (CSVParser csvRecords = CSVParser.parse(br, CSVFormat.EXCEL.builder().setDelimiter(';').setHeader().build())) {
             questions = new ArrayList<>();
@@ -52,7 +51,7 @@ public class QuizServiceCSV implements QuizService {
                         break;
                 }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
