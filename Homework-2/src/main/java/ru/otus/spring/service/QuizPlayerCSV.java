@@ -18,13 +18,14 @@ public class QuizPlayerCSV implements QuizPlayer {
     }
 
     @Override
+
     public void play() {
         greetUser();
         System.out.println("Quiz started");
         for (Question question : quiz.getQuestions()) {
             question.display();
             if (question.isCorrectAnswerAdded()) {
-                processQuestion(question);
+                ask(question);
             } else {
                 System.out.println("Skip question as no correct answer added");
             }
@@ -39,7 +40,7 @@ public class QuizPlayerCSV implements QuizPlayer {
         else System.out.println("Quiz failed!");
     }
 
-    private void processQuestion(Question question) {
+    private void ask(Question question) {
         Scanner scanner = new Scanner(System.in);
         String userInput;
         do {

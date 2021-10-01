@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.assertj.core.api.Assertions.*;
 
 class QuizTest {
@@ -13,9 +14,9 @@ class QuizTest {
 
     @BeforeAll
     static void setUpBeforeAll() {
-        questions.add(new Question("text1",2,3));
-        questions.add(new Question("text2",1,1));
-        questions.add(new Question("text3",3,2));
+        questions.add(new Question("text1", 2, 3));
+        questions.add(new Question("text2", 1, 1));
+        questions.add(new Question("text3", 3, 2));
 
     }
 
@@ -23,13 +24,5 @@ class QuizTest {
     void create() {
         Quiz quiz = Quiz.create(questions);
         assertThat(quiz.getQuestions()).isSortedAccordingTo(Question::compareTo);
-    }
-
-    @Test
-    void getQuestions() {
-    }
-
-    @Test
-    void testToString() {
     }
 }
