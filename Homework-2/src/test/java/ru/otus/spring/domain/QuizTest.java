@@ -22,7 +22,7 @@ class QuizTest {
 
     @Test
     void create() {
-        Quiz quiz = Quiz.create(questions);
+        Quiz quiz = Quiz.createSortedQuiz(questions);
         assertThat(quiz.getQuestions()).isSortedAccordingTo(Question::compareTo);
     }
 }

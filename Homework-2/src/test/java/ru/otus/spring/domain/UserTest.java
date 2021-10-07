@@ -2,6 +2,7 @@ package ru.otus.spring.domain;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.otus.spring.service.UserService;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -20,7 +21,7 @@ class UserTest {
         String fNamelName = "Ivan " + System.lineSeparator() + "Ivanov";
         ByteArrayInputStream in = new ByteArrayInputStream(fNamelName.getBytes());
         System.setIn(in);
-        user = User.create();
+        user = UserService.create();
         System.setIn(sysInBackup);
     }
 

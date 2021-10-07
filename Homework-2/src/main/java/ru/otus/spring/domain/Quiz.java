@@ -9,7 +9,7 @@ public class Quiz {
         this.questions = questions;
     }
 
-    public static Quiz create(List<Question> questions) {
+    public static Quiz createSortedQuiz(List<Question> questions) {
         return new Quiz(questions).sort();
     }
 
