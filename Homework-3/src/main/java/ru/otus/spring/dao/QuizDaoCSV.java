@@ -1,17 +1,15 @@
 package ru.otus.spring.dao;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Service;
-
+import org.springframework.stereotype.Component;
 import java.io.InputStream;
 
-@Service
-@PropertySource(value = "classpath:HW2.properties")
+@Component
 public class QuizDaoCSV implements QuizDao {
+
     private final String sourcePath;
 
-    public QuizDaoCSV(@Value("${quiz.path}") String sourcePath) {
+
+    public QuizDaoCSV(String sourcePath) {
         this.sourcePath = sourcePath;
     }
 

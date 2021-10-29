@@ -1,21 +1,43 @@
 package ru.otus.spring.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@PropertySource(value = "classpath:HW2.properties")
+@ConfigurationProperties(prefix = "quiz")
 public class AppConfig {
-    private static int requiredScore;
+    private String path;
+    private Settings settings;
 
-    @Value("${quiz.required.score}")
-    public void setRequiredAnswersCount(int requiredAnswersCount) {
-        AppConfig.requiredScore = requiredAnswersCount;
+    public Settings getSettings() {
+        return settings;
     }
 
-    public static int getRequiredScore() {
-        return requiredScore;
+    public void setSettings(Settings settings) {
+        this.settings = settings;
     }
 
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    @Bean
+    public String getPath() {
+        return path;
+    }
+
+
+   public static class Settings {
+        private int requiredscore;
+
+        @Bean
+        public int getRequiredscore() {
+            return requiredscore;
+        }
+
+        public void setRequiredscore(int requiredscore) {
+            this.requiredscore = requiredscore;
+        }
+    }
 }

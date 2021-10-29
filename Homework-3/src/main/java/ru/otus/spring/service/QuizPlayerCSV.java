@@ -1,8 +1,7 @@
 package ru.otus.spring.service;
 
-import ru.otus.spring.config.AppConfig;
-import ru.otus.spring.domain.Quiz;
 import ru.otus.spring.domain.Question;
+import ru.otus.spring.domain.Quiz;
 import ru.otus.spring.domain.User;
 
 import java.util.Scanner;
@@ -11,14 +10,13 @@ public class QuizPlayerCSV implements QuizPlayer {
     private final User user;
     private final Quiz quiz;
     private int score = 0;
-    private final int requiredScore = AppConfig.getRequiredScore();
+    private final int requiredScore;
 
-    public static QuizPlayerCSV create(User user, Quiz quiz) {
-        return new QuizPlayerCSV(user, quiz);
+    public static QuizPlayerCSV create(User user, Quiz quiz,int requiredScore) {
+        return new QuizPlayerCSV(user, quiz, requiredScore);
     }
 
     @Override
-
     public void play() {
         greetUser();
         System.out.println("Quiz started");
@@ -66,9 +64,10 @@ public class QuizPlayerCSV implements QuizPlayer {
         System.out.println("Hello, " + user);
     }
 
-    private QuizPlayerCSV(User user, Quiz quiz) {
+    private QuizPlayerCSV(User user, Quiz quiz, int requiredScore) {
         this.user = user;
         this.quiz = quiz;
+        this.requiredScore = requiredScore;
     }
 
 }
