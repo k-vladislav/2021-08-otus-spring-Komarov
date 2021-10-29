@@ -1,0 +1,4 @@
+quiz:
+  path: /Quizzes/quiz.csv
+  settings:
+    requiredscore: ${random.int}
