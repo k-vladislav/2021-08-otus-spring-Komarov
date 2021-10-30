@@ -9,13 +9,15 @@ import org.springframework.context.annotation.Configuration;
 public class AppConfig {
     private String path;
     private Settings settings;
+    private String localeLabel;
 
-    public Settings getSettings() {
-        return settings;
+    @Bean
+    public String getLocaleLabel() {
+        return localeLabel;
     }
 
-    public void setSettings(Settings settings) {
-        this.settings = settings;
+    public void setLocaleLabel(String localeLabel) {
+        this.localeLabel = localeLabel;
     }
 
     public void setPath(String path) {
@@ -27,17 +29,25 @@ public class AppConfig {
         return path;
     }
 
+    public Settings getSettings() {
+        return settings;
+    }
 
-   public static class Settings {
-        private int requiredscore;
+    public void setSettings(Settings settings) {
+        this.settings = settings;
+    }
+
+
+    public static class Settings {
+        private int requiredScore;
 
         @Bean
-        public int getRequiredscore() {
-            return requiredscore;
+        public int getRequiredScore() {
+            return requiredScore;
         }
 
-        public void setRequiredscore(int requiredscore) {
-            this.requiredscore = requiredscore;
+        public void setRequiredScore(int requiredScore) {
+            this.requiredScore = requiredScore;
         }
     }
 }

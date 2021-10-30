@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class QuizServiceCSV implements QuizService {
@@ -24,18 +23,19 @@ public class QuizServiceCSV implements QuizService {
     }
 
     @Override
-    public Optional<List<CSVRecord>> getQuizRawData() {
+    @Bean
+    public List<CSVRecord> getQuizRawData() {
         InputStream quizIS = dao.getQuiz();
         return getQuizCSVRecords(quizIS);
     }
 
-    private Optional<List<CSVRecord>> getQuizCSVRecords(InputStream quizIS) {
+    private List<CSVRecord> getQuizCSVRecords(InputStream quizIS) {
         BufferedReader br = new BufferedReader(new InputStreamReader(quizIS));
         try (CSVParser csvRecords = CSVParser.parse(br, CSVFormat.EXCEL.builder().setDelimiter(';').setHeader().build())) {
-            return Optional.of(csvRecords.getRecords());
+            return csvRecords.getRecords();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return Optional.empty();
+        return null;
     }
 }

@@ -1,4 +1,10 @@
 quiz:
   path: /Quizzes/quiz.csv
+  localeLabel: RU
   settings:
-    requiredscore: ${random.int}
+    requiredScore: 3
+spring:
+  messages:
+    basename: messages
+    use-code-as-default-message: true
+    fallback-to-system-locale: false

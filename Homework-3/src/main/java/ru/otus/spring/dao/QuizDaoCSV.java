@@ -1,5 +1,6 @@
 package ru.otus.spring.dao;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import java.io.InputStream;
 
@@ -9,7 +10,7 @@ public class QuizDaoCSV implements QuizDao {
     private final String sourcePath;
 
 
-    public QuizDaoCSV(String sourcePath) {
+    public QuizDaoCSV(@Qualifier("getPath") String sourcePath) {
         this.sourcePath = sourcePath;
     }
 

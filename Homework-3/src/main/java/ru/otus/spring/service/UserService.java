@@ -9,16 +9,17 @@ import java.util.Scanner;
 @Service
 public class UserService {
 
+
     @Bean
-    public static User create() {
+    public static User create(MsgService msgService) {
         String firstName = "", lastName = "";
         Scanner scanner = new Scanner(System.in);
         while ("".equals(firstName)) {
-            System.out.println("Enter your first name:");
+            msgService.out("user.enter.firstname");
             firstName = scanner.nextLine();
         }
         while ("".equals(lastName)) {
-            System.out.println("Enter your last name:");
+            msgService.out("user.enter.lastname");
             lastName = scanner.nextLine();
         }
         return User.create(firstName, lastName);

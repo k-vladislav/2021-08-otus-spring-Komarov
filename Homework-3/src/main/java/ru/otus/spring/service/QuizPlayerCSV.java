@@ -1,55 +1,62 @@
 package ru.otus.spring.service;
 
+import org.springframework.stereotype.Service;
+import ru.otus.spring.config.AppConfig;
 import ru.otus.spring.domain.Question;
 import ru.otus.spring.domain.Quiz;
 import ru.otus.spring.domain.User;
 
 import java.util.Scanner;
 
+@Service
 public class QuizPlayerCSV implements QuizPlayer {
     private final User user;
     private final Quiz quiz;
     private int score = 0;
     private final int requiredScore;
+    private final MsgService msgSrc;
 
-    public static QuizPlayerCSV create(User user, Quiz quiz,int requiredScore) {
-        return new QuizPlayerCSV(user, quiz, requiredScore);
+    private QuizPlayerCSV(User user, Quiz quiz, AppConfig appConfig, MsgService msgSrc) {
+        this.user = user;
+        this.quiz = quiz;
+        this.requiredScore = appConfig.getSettings().getRequiredScore();
+        this.msgSrc = msgSrc;
     }
 
     @Override
     public void play() {
         greetUser();
-        System.out.println("Quiz started");
+        msgSrc.out("quiz.started");
         for (Question question : quiz.getQuestions()) {
             question.display();
             if (question.isCorrectAnswerAdded()) {
                 ask(question);
             } else {
-                System.out.println("Skip question as no correct answer added");
+                msgSrc.out("quiz.skip.question");
             }
         }
-        System.out.println("Quiz finished");
+        msgSrc.out("quiz.finished");
         displayResult();
     }
 
     private void displayResult() {
-        System.out.println("Your score: " + score + ". Required score: " + requiredScore);
-        if (score>=requiredScore) System.out.println("Quiz passed!");
-        else System.out.println("Quiz failed!");
+        msgSrc.out("quiz.show.score.and.required.score",new String[]{String.valueOf(score), String.valueOf(requiredScore)});
+        if (score >= requiredScore) msgSrc.out("quiz.passed");
+        else msgSrc.out("quiz.failed");
     }
 
     private void ask(Question question) {
         Scanner scanner = new Scanner(System.in);
         String userInput;
         do {
-            System.out.print("Your input: ");
+            msgSrc.out("quiz.question.user.input");
             userInput = scanner.nextLine();
         } while (!isUserInputValid(question, userInput));
-        System.out.println("Correct: " + question.getCorrectAnswerId());
+        msgSrc.out("quiz.correct.answer",new String[] {String.valueOf(question.getCorrectAnswerId())});
         if (question.isCorrectAnswer(Integer.parseInt(userInput))) {
             score++;
         }
-        System.out.println("Score: " + score);
+        msgSrc.out("quiz.current.score",new String[]{String.valueOf(score)});
     }
 
     private boolean isUserInputValid(Question question, String userInput) {
@@ -61,13 +68,6 @@ public class QuizPlayerCSV implements QuizPlayer {
     }
 
     private void greetUser() {
-        System.out.println("Hello, " + user);
+        msgSrc.out("user.greet", new String[]{String.valueOf(user)});
     }
-
-    private QuizPlayerCSV(User user, Quiz quiz, int requiredScore) {
-        this.user = user;
-        this.quiz = quiz;
-        this.requiredScore = requiredScore;
-    }
-
 }

@@ -1,22 +1,28 @@
 package ru.otus.spring.service;
 
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
 import ru.otus.spring.domain.Answer;
 import ru.otus.spring.domain.Question;
 import ru.otus.spring.domain.Quiz;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+@Service
 public class QuizBuilderCSV implements QuizBuilder {
     private List<Question> questions;
     private List<Answer> answers;
     private final List<CSVRecord> csvRecords;
 
-    private QuizBuilderCSV(List<CSVRecord> csvRecords) {
+    public QuizBuilderCSV(List<CSVRecord> csvRecords) {
         this.csvRecords = csvRecords;
     }
 
+    @Bean
     @Override
     public Quiz buildQuiz() {
         readQnA();
@@ -24,11 +30,8 @@ public class QuizBuilderCSV implements QuizBuilder {
         return Quiz.createSortedQuiz(questions);
     }
 
-    public static QuizBuilderCSV getBuilder(List<CSVRecord> csvRecords) {
-        return new QuizBuilderCSV(csvRecords);
-    }
-
     private void readQnA() {
+        if (csvRecords.isEmpty()) return;
         questions = new ArrayList<>();
         answers = new ArrayList<>();
         for (CSVRecord csvRecord : csvRecords) {
