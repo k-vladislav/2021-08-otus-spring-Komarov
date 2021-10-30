@@ -17,7 +17,6 @@ import java.util.List;
 public class QuizServiceCSV implements QuizService {
     private final QuizDaoCSV dao;
 
-
     public QuizServiceCSV(QuizDaoCSV dao) {
         this.dao = dao;
     }
