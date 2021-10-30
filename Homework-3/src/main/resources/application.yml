@@ -1,8 +1,8 @@
 quiz:
   path: /Quizzes/quiz.csv
   localeLabel: RU
-  settings:
-    requiredScore: 3
+  requiredScore: 3
+
 spring:
   messages:
     basename: messages

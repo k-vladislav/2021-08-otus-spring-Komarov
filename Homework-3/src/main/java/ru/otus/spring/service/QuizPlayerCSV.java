@@ -1,7 +1,6 @@
 package ru.otus.spring.service;
 
 import org.springframework.stereotype.Service;
-import ru.otus.spring.config.AppConfig;
 import ru.otus.spring.domain.Question;
 import ru.otus.spring.domain.Quiz;
 import ru.otus.spring.domain.User;
@@ -16,10 +15,10 @@ public class QuizPlayerCSV implements QuizPlayer {
     private final int requiredScore;
     private final MsgService msgSrc;
 
-    private QuizPlayerCSV(User user, Quiz quiz, AppConfig appConfig, MsgService msgSrc) {
+    private QuizPlayerCSV(User user, Quiz quiz, int requiredScore, MsgService msgSrc) {
         this.user = user;
         this.quiz = quiz;
-        this.requiredScore = appConfig.getSettings().getRequiredScore();
+        this.requiredScore = requiredScore;
         this.msgSrc = msgSrc;
     }
 

@@ -8,8 +8,17 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "quiz")
 public class AppConfig {
     private String path;
-    private Settings settings;
     private String localeLabel;
+    private int requiredScore;
+
+    @Bean
+    public int getRequiredScore() {
+        return requiredScore;
+    }
+
+    public void setRequiredScore(int requiredScore) {
+        this.requiredScore = requiredScore;
+    }
 
     @Bean
     public String getLocaleLabel() {
@@ -27,27 +36,5 @@ public class AppConfig {
     @Bean
     public String getPath() {
         return path;
-    }
-
-    public Settings getSettings() {
-        return settings;
-    }
-
-    public void setSettings(Settings settings) {
-        this.settings = settings;
-    }
-
-
-    public static class Settings {
-        private int requiredScore;
-
-        @Bean
-        public int getRequiredScore() {
-            return requiredScore;
-        }
-
-        public void setRequiredScore(int requiredScore) {
-            this.requiredScore = requiredScore;
-        }
     }
 }
