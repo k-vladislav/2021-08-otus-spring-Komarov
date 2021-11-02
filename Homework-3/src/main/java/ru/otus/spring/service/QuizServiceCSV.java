@@ -5,7 +5,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
-import ru.otus.spring.dao.QuizDaoCSV;
+import ru.otus.spring.dao.QuizDao;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,10 +15,10 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-public class QuizServiceCSV implements QuizService {
-    private final QuizDaoCSV dao;
+public class QuizServiceCSV implements QuizService<CSVRecord> {
+    private final QuizDao dao;
 
-    public QuizServiceCSV(QuizDaoCSV dao) {
+    public QuizServiceCSV(QuizDao dao) {
         this.dao = dao;
     }
 
