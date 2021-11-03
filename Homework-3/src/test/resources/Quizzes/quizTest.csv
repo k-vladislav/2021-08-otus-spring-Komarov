@@ -1,0 +1,21 @@
+TYPE;QID;AID;VALUE;VALUERU
+A;1;3;Addis Ababa;Аддис Абеба
+A;4;3;Airplane;Самолет
+A;4;1;Bicycle;Велосипед
+A;2;1;Cat;Машина
+A;2;3;Dog;Собака
+A;3;2;Dollar;Доллар
+Q;5;3;How many women were the Pope of Rome?;Сколько Пап Римских были женщинами?
+A;3;1;Kuna;Куна
+A;1;2;London;Лондон
+A;5;3;None;Никто
+A;5;1;One;Одна
+A;2;2;Penguin;Пингвин
+A;3;3;Ruble;Рубль
+A;1;1;Tokyo;Токио
+A;4;2;Train;Поезд
+A;5;2;Two;Две
+Q;1;2;What is the capital of Great Britain?;Что столица Великобритании?
+Q;3;3;What is the currency of Russia?;Какая валюта в России?
+Q;4;1;What is the most ecology friendly vehicle?;Какой вид траспорта самый экологически чистый?
+Q;2;1;"Who says ""meow""?";"Кто говорит ""мяу""?"
