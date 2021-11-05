@@ -10,6 +10,16 @@ public class AppConfig {
     private String path;
     private String localeLabel;
     private int requiredScore;
+    private String logType;
+
+    @Bean
+    public String getLogType() {
+        return logType;
+    }
+
+    public void setLogType(String logType) {
+        this.logType = logType;
+    }
 
     @Bean
     public int getRequiredScore() {
@@ -37,4 +47,14 @@ public class AppConfig {
     public String getPath() {
         return path;
     }
+
+   /* @Bean
+    public Messenger getMessenger(MessageSource source, @Qualifier("getLocaleLabel") String localeLabel, @Qualifier("getLogType") String logType) {
+        if ("text".equals(logType)) {
+            return new FileMsgService();
+        } else {
+            return new MsgService(source, localeLabel);
+        }
+    }*/
+
 }

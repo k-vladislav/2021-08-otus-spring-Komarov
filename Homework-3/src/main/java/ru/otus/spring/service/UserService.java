@@ -10,8 +10,8 @@ import java.util.Scanner;
 public class UserService {
 
 
-    @Bean
-    public static User create(MsgService msgService) {
+    //@Bean
+    public static User create(Messenger msgService) {
         String firstName = "", lastName = "";
         Scanner scanner = new Scanner(System.in);
         while ("".equals(firstName)) {

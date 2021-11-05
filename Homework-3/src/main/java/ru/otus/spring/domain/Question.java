@@ -8,7 +8,6 @@ public class Question implements Comparable<Question> {
     private final List<Answer> answers = new ArrayList<>();
     private final int questionId;
     private final int correctAnswerId;
-    private boolean correctAnswerAdded = false;
 
     public Question(String questionValue, int questionId, int correctAnswerId) {
         this.questionText = questionValue;
@@ -20,13 +19,8 @@ public class Question implements Comparable<Question> {
         return answers;
     }
 
-    public boolean isCorrectAnswerAdded() {
-        return correctAnswerAdded;
-    }
-
     public void addAnswer(Answer newAnswer) {
         answers.add(newAnswer);
-        if (newAnswer.getAnswerId() == correctAnswerId) correctAnswerAdded = true;
     }
 
     public int getAnswersCount() {
@@ -36,13 +30,6 @@ public class Question implements Comparable<Question> {
     @Override
     public String toString() {
         return questionId + ". " + questionText;
-    }
-
-    public void display() {
-        System.out.println(this);
-        for (Answer answer : this.answers) {
-            System.out.println(answer);
-        }
     }
 
     public int getQuestionId() {
