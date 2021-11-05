@@ -5,7 +5,7 @@ public class Answer implements Comparable<Answer> {
     private final int questionId;
     private final int answerId;
 
-    public Answer(String answer, int questionId, int answerId) {
+    public Answer(int answerId, String answer, int questionId) {
         this.answer = answer;
         this.questionId = questionId;
         this.answerId = answerId;

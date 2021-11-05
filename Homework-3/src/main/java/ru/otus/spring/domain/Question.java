@@ -4,32 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Question implements Comparable<Question> {
-    private final String questionText;
-    private final List<Answer> answers = new ArrayList<>();
     private final int questionId;
+    private final String questionText;
     private final int correctAnswerId;
+    private final List<Answer> answers = new ArrayList<>();
 
-    public Question(String questionValue, int questionId, int correctAnswerId) {
-        this.questionText = questionValue;
+    public Question(int questionId, String questionValue, int correctAnswerId) {
         this.questionId = questionId;
+        this.questionText = questionValue;
         this.correctAnswerId = correctAnswerId;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers;
     }
 
     public void addAnswer(Answer newAnswer) {
         answers.add(newAnswer);
     }
 
-    public int getAnswersCount() {
-        return answers.size();
+    public List<Answer> getAnswers() {
+        return answers;
     }
 
-    @Override
-    public String toString() {
-        return questionId + ". " + questionText;
+    public int getAnswersCount() {
+        return answers.size();
     }
 
     public int getQuestionId() {
@@ -42,6 +37,11 @@ public class Question implements Comparable<Question> {
 
     public boolean isCorrectAnswer(int answer) {
         return answer == correctAnswerId;
+    }
+
+    @Override
+    public String toString() {
+        return questionId + ". " + questionText;
     }
 
     @Override

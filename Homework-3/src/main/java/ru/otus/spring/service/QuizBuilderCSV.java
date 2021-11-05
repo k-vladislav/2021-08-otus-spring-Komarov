@@ -39,10 +39,10 @@ public class QuizBuilderCSV implements QuizBuilder<CSVRecord> {
             String value = csvRecord.get(val);
             switch (type.trim()) {
                 case "Q":
-                    questions.add(new Question(value, qID, aID));
+                    questions.add(new Question(qID, value, aID));
                     break;
                 case "A":
-                    answers.add(new Answer(value, qID, aID));
+                    answers.add(new Answer(aID, value, qID));
                     break;
             }
         }
