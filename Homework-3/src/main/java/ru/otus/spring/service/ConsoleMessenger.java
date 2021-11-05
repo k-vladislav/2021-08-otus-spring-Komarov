@@ -7,12 +7,12 @@ import org.springframework.stereotype.Service;
 import java.util.Locale;
 
 @Service
-public class MsgService implements Messenger {
+public class ConsoleMessenger implements Messenger {
 
     private final MessageSource msgSrc;
     private final String localeLabel;
 
-    public MsgService(MessageSource msgSrc, @Qualifier("getLocaleLabel") String localeLabel) {
+    public ConsoleMessenger(MessageSource msgSrc, @Qualifier("getLocaleLabel") String localeLabel) {
         this.msgSrc = msgSrc;
         this.localeLabel = localeLabel;
     }

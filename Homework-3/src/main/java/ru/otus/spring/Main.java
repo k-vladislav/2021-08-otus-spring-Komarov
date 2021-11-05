@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.ApplicationContext;
 import ru.otus.spring.service.QuizPlayerCSV;
-import ru.otus.spring.service.UserService;
 
 @SpringBootApplication
 @ConfigurationPropertiesScan

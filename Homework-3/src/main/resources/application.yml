@@ -2,7 +2,6 @@ quiz:
   path: /Quizzes/quiz.csv
   localeLabel: EN
   requiredScore: 3
-  logType: console
 
 spring:
   messages:
