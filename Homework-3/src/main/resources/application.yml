@@ -1,6 +1,6 @@
 quiz:
   path: /Quizzes/quiz.csv
-  localeLabel: EN
+  localeLabel: RU
   requiredScore: 3
 
 spring:
