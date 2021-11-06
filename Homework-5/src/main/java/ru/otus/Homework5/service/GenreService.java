@@ -1,7 +1,7 @@
 package ru.otus.Homework5.service;
 
 import org.springframework.stereotype.Service;
-import ru.otus.Homework5.dao.GenreDao;
+import ru.otus.Homework5.dao.Dao;
 import ru.otus.Homework5.domain.Genre;
 
 import java.util.List;
@@ -9,34 +9,34 @@ import java.util.List;
 @Service
 public class GenreService implements CommonService<Genre>{
 
-    private final GenreDao genreDao;
+    private final Dao<Genre> dao;
 
-    public GenreService(GenreDao genreDao) {
-        this.genreDao = genreDao;
+    public GenreService(Dao<Genre> dao) {
+        this.dao = dao;
     }
     
     @Override
     public int count() {
-        return genreDao.count();
+        return dao.count();
     }
 
     @Override
     public long insert(String value) {
-        return genreDao.insert(new Genre(value));
+        return dao.insert(new Genre(value));
     }
 
     @Override
     public Genre getById(long id) {
-        return genreDao.getById(id);
+        return dao.getById(id);
     }
 
     @Override
     public List<Genre> getAll() {
-        return genreDao.getAll();
+        return dao.getAll();
     }
 
     @Override
     public void deleteById(long id) {
-        genreDao.deleteById(id);
+        dao.deleteById(id);
     }
 }

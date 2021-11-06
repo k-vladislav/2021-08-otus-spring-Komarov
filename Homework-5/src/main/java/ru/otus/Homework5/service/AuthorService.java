@@ -1,7 +1,7 @@
 package ru.otus.Homework5.service;
 
 import org.springframework.stereotype.Service;
-import ru.otus.Homework5.dao.AuthorDao;
+import ru.otus.Homework5.dao.Dao;
 import ru.otus.Homework5.domain.Author;
 
 import java.util.List;
@@ -9,34 +9,34 @@ import java.util.List;
 @Service
 public class AuthorService implements CommonService<Author>{
 
-    private final AuthorDao authorDao;
+    private final Dao<Author> dao;
 
-    public AuthorService(AuthorDao authorDao) {
-        this.authorDao = authorDao;
+    public AuthorService(Dao<Author> dao) {
+        this.dao = dao;
     }
 
     @Override
     public int count() {
-        return authorDao.count();
+        return dao.count();
     }
 
     @Override
     public long insert(String value) {
-        return authorDao.insert(new Author(value));
+        return dao.insert(new Author(value));
     }
 
     @Override
     public Author getById(long id) {
-        return authorDao.getById(id);
+        return dao.getById(id);
     }
 
     @Override
     public List<Author> getAll() {
-        return authorDao.getAll();
+        return dao.getAll();
     }
 
     @Override
     public void deleteById(long id) {
-        authorDao.deleteById(id);
+        dao.deleteById(id);
     }
 }
