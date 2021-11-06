@@ -6,7 +6,7 @@ public interface Dao<T> {
 
     int count();
 
-    void insert(T t);
+    long insert(T t);
 
     T getById(long id);
 

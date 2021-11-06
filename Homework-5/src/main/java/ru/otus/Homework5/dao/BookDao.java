@@ -1,7 +1,10 @@
 package ru.otus.Homework5.dao;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.otus.Homework5.domain.Book;
 
@@ -26,8 +29,12 @@ public class BookDao implements Dao<Book> {
     }
 
     @Override
-    public void insert(Book Book) {
-        jdbc.update("insert into Book (`TITLE`) values (:lastName)", Map.of("title", Book.getTitle()));
+    public long insert(Book book) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("title", book.getTitle());
+        jdbc.update("insert into Book (`TITLE`) values (:title)", params,keyHolder);
+        return keyHolder.getKey().longValue();
     }
 
     @Override
