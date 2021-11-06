@@ -21,8 +21,8 @@ public class AuthorService implements CommonService<Author>{
     }
 
     @Override
-    public void insert(String value) {
-        authorDao.insert(new Author(value));
+    public long insert(String value) {
+        return authorDao.insert(new Author(value));
     }
 
     @Override

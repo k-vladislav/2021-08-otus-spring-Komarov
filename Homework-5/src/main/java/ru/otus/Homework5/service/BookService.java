@@ -21,8 +21,8 @@ public class BookService implements CommonService<Book>{
     }
 
     @Override
-    public void insert(String value) {
-        bookDao.insert(new Book(value));
+    public long insert(String value) {
+        return bookDao.insert(new Book(value));
     }
 
     @Override

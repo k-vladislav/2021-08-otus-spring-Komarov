@@ -21,8 +21,8 @@ public class GenreService implements CommonService<Genre>{
     }
 
     @Override
-    public void insert(String value) {
-        genreDao.insert(new Genre(value));
+    public long insert(String value) {
+        return genreDao.insert(new Genre(value));
     }
 
     @Override

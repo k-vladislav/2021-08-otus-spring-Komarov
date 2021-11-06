@@ -6,7 +6,7 @@ public interface CommonService<T> {
 
     int count();
 
-    void insert(String value);
+    long insert(String value);
 
     T getById(long id);
 
