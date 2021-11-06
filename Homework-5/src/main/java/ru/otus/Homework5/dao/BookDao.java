@@ -52,6 +52,11 @@ public class BookDao implements Dao<Book> {
         jdbc.update("delete from Book where id = :id", Map.of("id", id));
     }
 
+    @Override
+    public Long getIdByValue(String value) {
+        return jdbc.queryForObject("select id from Book where title=:title",Map.of("title",value),Long.class);
+    }
+
     private static class BookMapper implements RowMapper<Book> {
 
         @Override

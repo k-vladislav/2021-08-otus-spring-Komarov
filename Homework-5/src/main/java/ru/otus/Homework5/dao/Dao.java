@@ -1,6 +1,7 @@
 package ru.otus.Homework5.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface Dao<T> {
 
@@ -13,4 +14,6 @@ public interface Dao<T> {
     List<T> getAll();
 
     void deleteById(long id);
+
+    Long getIdByValue(String value);
 }

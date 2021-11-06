@@ -3,7 +3,6 @@ package ru.otus.Homework5.dao;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -34,7 +33,7 @@ public class AuthorDao implements Dao<Author> {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("lastName", author.getLastName());
-        jdbc.update("insert into Author (`LAST_NAME`) values (:lastName)",params,keyHolder);
+        jdbc.update("insert into Author (`LAST_NAME`) values (:lastName)", params, keyHolder);
         return keyHolder.getKey().longValue();
     }
 
@@ -51,6 +50,11 @@ public class AuthorDao implements Dao<Author> {
     @Override
     public void deleteById(long id) {
         jdbc.update("delete from Author where id = :id", Map.of("id", id));
+    }
+
+    @Override
+    public Long getIdByValue(String value) {
+        return jdbc.queryForObject("select id from Author where last_name=:lastName",Map.of("lastName",value),Long.class);
     }
 
     private static class AuthorMapper implements RowMapper<Author> {

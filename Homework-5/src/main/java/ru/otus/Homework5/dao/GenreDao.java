@@ -52,6 +52,11 @@ public class GenreDao implements Dao<Genre> {
         jdbc.update("delete from Genre where id = :id", Map.of("id", id));
     }
 
+    @Override
+    public Long getIdByValue(String value) {
+        return jdbc.queryForObject("select id from Genre where genre=:genre",Map.of("genre",value),Long.class);
+    }
+
     private static class GenreMapper implements RowMapper<Genre> {
 
         @Override
