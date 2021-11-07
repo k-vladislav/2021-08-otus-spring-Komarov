@@ -12,10 +12,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 @SuppressWarnings({"SqlNoDataSourceInspection", "ConstantConditions", "SqlDialectInspection"}) //todo check warns
-public class BookDao implements Dao<Book> {
+public class BookDao implements LibraryDao<Book> {
 
     private final NamedParameterJdbcOperations jdbc;
 
@@ -29,22 +30,24 @@ public class BookDao implements Dao<Book> {
     }
 
     @Override
-    public long insert(Book book) {
+    public long insert(String value) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("title", book.getTitle());
+        params.addValue("title", value);
         jdbc.update("insert into Book (`TITLE`) values (:title)", params,keyHolder);
         return keyHolder.getKey().longValue();
     }
 
     @Override
-    public Book getById(long id) {
-        return jdbc.queryForObject("select * from Book where id = :id", Map.of("id", id), new BookMapper());
+    public Optional<Book> getById(long id) {
+        Book book = jdbc.queryForObject("select * from Book where id = :id", Map.of("id", id), new BookMapper());
+        return Optional.ofNullable(book);
     }
 
     @Override
-    public List<Book> getAll() {
-        return jdbc.query("select * from Book", new BookMapper());
+    public Optional<List<Book>> getAll() {
+        List<Book> books = jdbc.query("select * from Book", new BookMapper());
+        return Optional.ofNullable(books);
     }
 
     @Override
@@ -53,8 +56,9 @@ public class BookDao implements Dao<Book> {
     }
 
     @Override
-    public Long getIdByValue(String value) {
-        return jdbc.queryForObject("select id from Book where title=:title",Map.of("title",value),Long.class);
+    public Optional<Long> getIdByValue(String value) {
+        Long id = jdbc.queryForObject("select id from Book where title=:title", Map.of("title", value), Long.class);
+        return Optional.ofNullable(id);
     }
 
     private static class BookMapper implements RowMapper<Book> {

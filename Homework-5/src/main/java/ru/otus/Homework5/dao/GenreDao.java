@@ -12,10 +12,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 @SuppressWarnings({"SqlNoDataSourceInspection", "ConstantConditions", "SqlDialectInspection"}) //todo check warns
-public class GenreDao implements Dao<Genre> {
+public class GenreDao implements LibraryDao<Genre> {
 
     private final NamedParameterJdbcOperations jdbc;
 
@@ -29,22 +30,24 @@ public class GenreDao implements Dao<Genre> {
     }
 
     @Override
-    public long insert(Genre genre) {
+    public long insert(String value) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("genre", genre.getGenre());
-        jdbc.update("insert into Genre (`GENRE`) values (:genre)", params,keyHolder);
+        params.addValue("genre", value);
+        jdbc.update("insert into Genre (`GENRE`) values (:genre)", params, keyHolder);
         return keyHolder.getKey().longValue();
     }
 
     @Override
-    public Genre getById(long id) {
-        return jdbc.queryForObject("select * from Genre where id = :id", Map.of("id", id), new GenreMapper());
+    public Optional<Genre> getById(long id) {
+        Genre genre = jdbc.queryForObject("select * from Genre where id = :id", Map.of("id", id), new GenreMapper());
+        return Optional.ofNullable(genre);
     }
 
     @Override
-    public List<Genre> getAll() {
-        return jdbc.query("select * from Genre", new GenreMapper());
+    public Optional<List<Genre>> getAll() {
+        List<Genre> genres = jdbc.query("select * from Genre", new GenreMapper());
+        return Optional.ofNullable(genres);
     }
 
     @Override
@@ -53,8 +56,9 @@ public class GenreDao implements Dao<Genre> {
     }
 
     @Override
-    public Long getIdByValue(String value) {
-        return jdbc.queryForObject("select id from Genre where genre=:genre",Map.of("genre",value),Long.class);
+    public Optional<Long> getIdByValue(String value) {
+        Long id = jdbc.queryForObject("select id from Genre where genre=:genre", Map.of("genre", value), Long.class);
+        return Optional.ofNullable(id);
     }
 
     private static class GenreMapper implements RowMapper<Genre> {

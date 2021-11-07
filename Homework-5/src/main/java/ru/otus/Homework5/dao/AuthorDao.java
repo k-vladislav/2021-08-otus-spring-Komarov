@@ -12,10 +12,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 @SuppressWarnings({"SqlNoDataSourceInspection", "ConstantConditions", "SqlDialectInspection"}) //todo check warns
-public class AuthorDao implements Dao<Author> {
+public class AuthorDao implements LibraryDao<Author> {
 
     private final NamedParameterJdbcOperations jdbc;
 
@@ -29,22 +30,24 @@ public class AuthorDao implements Dao<Author> {
     }
 
     @Override
-    public long insert(Author author) {
+    public long insert(String value) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("lastName", author.getLastName());
+        params.addValue("lastName", value);
         jdbc.update("insert into Author (`LAST_NAME`) values (:lastName)", params, keyHolder);
         return keyHolder.getKey().longValue();
     }
 
     @Override
-    public Author getById(long id) {
-        return jdbc.queryForObject("select * from Author where id = :id", Map.of("id", id), new AuthorMapper());
+    public Optional<Author> getById(long id) {
+        Author author = jdbc.queryForObject("select * from Author where id = :id", Map.of("id", id), new AuthorMapper());
+        return Optional.ofNullable(author);
     }
 
     @Override
-    public List<Author> getAll() {
-        return jdbc.query("select * from Author", new AuthorMapper());
+    public Optional<List<Author>> getAll() {
+        List<Author> authors = jdbc.query("select * from Author", new AuthorMapper());
+        return Optional.ofNullable(authors);
     }
 
     @Override
@@ -53,8 +56,9 @@ public class AuthorDao implements Dao<Author> {
     }
 
     @Override
-    public Long getIdByValue(String value) {
-        return jdbc.queryForObject("select id from Author where last_name=:lastName",Map.of("lastName",value),Long.class);
+    public Optional<Long> getIdByValue(String value) {
+        Long id = jdbc.queryForObject("select id from Author where last_name=:lastName", Map.of("lastName", value), Long.class);
+        return Optional.ofNullable(id);
     }
 
     private static class AuthorMapper implements RowMapper<Author> {
