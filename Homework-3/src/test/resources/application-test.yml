@@ -1,5 +1,5 @@
 quiz:
-  path: /Quizzes/quiz.csv
+  path: /Quizzes/quizTest.csv
   localeLabel: RU
   requiredScore: 3
 

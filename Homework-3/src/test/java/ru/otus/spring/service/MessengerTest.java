@@ -1,21 +1,21 @@
 package ru.otus.spring.service;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.context.MessageSourceAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestComponent;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.MessageSource;
 
 import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest(classes = {MsgServiceTest.class, MessageSourceAutoConfiguration.class})
+@SpringBootTest(classes = {MessengerTest.class, MessageSourceAutoConfiguration.class})
 @TestComponent
-class MsgServiceTest {
+class MessengerTest {
 
     @Value(value = "RU")
     private String localeLabel;
@@ -24,7 +24,8 @@ class MsgServiceTest {
     private MessageSource msgSrc;
 
     @Test
-    void out() {
+    @DisplayName("should print RU/EN messages depending on locale label")
+    void output_Depending_On_LocaleLabel() {
         String message = "test.msgservice";
         String out = msgSrc.getMessage(message, null, Locale.forLanguageTag(localeLabel));
         if ("RU".equalsIgnoreCase(localeLabel)) {

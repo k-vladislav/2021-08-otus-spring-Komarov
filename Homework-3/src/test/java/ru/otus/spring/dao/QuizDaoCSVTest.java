@@ -1,6 +1,7 @@
 package ru.otus.spring.dao;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.TestComponent;
 
@@ -19,6 +20,7 @@ class QuizDaoCSVTest {
 
 
     @Test
+    @DisplayName("should get not null InputStream")
     void shouldGetNotNullInputStream() {
         InputStream quiz = quizDaoCSV.getQuiz();
         assertNotNull(quiz);

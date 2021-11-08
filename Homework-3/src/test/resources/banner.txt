@@ -1,1 +1,1 @@
-${AnsiBackground.BRIGHT_YELLOW} ${AnsiColor.BRIGHT_RED}QUIZ${AnsiBackground.DEFAULT}${AnsiColor.DEFAULT}
+${AnsiBackground.BRIGHT_YELLOW} ${AnsiColor.BRIGHT_RED}QUIZ UNIT TEST${AnsiBackground.DEFAULT}${AnsiColor.DEFAULT}

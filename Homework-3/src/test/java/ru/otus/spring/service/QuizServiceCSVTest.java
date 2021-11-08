@@ -1,45 +1,45 @@
 package ru.otus.spring.service;
 
 import org.apache.commons.csv.CSVRecord;
-
-import org.assertj.core.api.*;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestComponent;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import ru.otus.spring.dao.QuizDao;
 
-import java.util.Collections;
+import java.io.InputStream;
 import java.util.List;
+
+import static org.mockito.Mockito.doReturn;
 
 
 @SpringBootTest
 @TestComponent
 class QuizServiceCSVTest {
     @Configuration
-     static class QuizServiceTestConfiguration {
+    static class QuizServiceTestConfiguration {
 
     }
+
+    @MockBean
+    QuizDao dao;
 
     @MockBean
     QuizService<CSVRecord> quizService;
 
     @MockBean
-    List<CSVRecord> csvRecords;
+    InputStream inputStream;
 
     @Test
-    void shouldReturnListOfCSVRecords() { //todo что я тут проверяю
-        //Mockito.when(quizService.getQuizRawData()).thenReturn(Collections.emptyList());
-        Mockito.when(quizService.getQuizRawData()).thenReturn(csvRecords);
-        Assertions.assertThat(quizService.getQuizRawData()).isEqualTo(csvRecords);
+    @DisplayName("should return list of CSVRecord")
+    void shouldReturnListOfCSVRecords() {
+        doReturn(inputStream).when(dao).getQuiz();
+        Assertions.assertThat(quizService.getQuizRawData()).isInstanceOf(List.class);
     }
-
-/*    @Test
-    void shouldCatchException() {
-        String sourcePath = "/wrong/path";
-        QuizDaoCSV dao = new QuizDaoCSV(sourcePath);
-        QuizService<CSVRecord> mockQuizService = new QuizServiceCSV(dao);
-        assertThrows(Exception.class, mockQuizService::getQuizRawData);
-    }*/
 }
