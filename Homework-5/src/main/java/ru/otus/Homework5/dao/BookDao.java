@@ -1,6 +1,7 @@
 package ru.otus.Homework5.dao;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.SingleColumnRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -34,7 +35,7 @@ public class BookDao implements LibraryDao<Book> {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("title", value);
-        jdbc.update("insert into Book (`TITLE`) values (:title)", params,keyHolder);
+        jdbc.update("insert into Book (`TITLE`) values (:title)", params, keyHolder);
         return keyHolder.getKey().longValue();
     }
 
@@ -57,8 +58,9 @@ public class BookDao implements LibraryDao<Book> {
 
     @Override
     public Optional<Long> getIdByValue(String value) {
-        Long id = jdbc.queryForObject("select id from Book where title=:title", Map.of("title", value), Long.class);
-        return Optional.ofNullable(id);
+        List<Long> ids = jdbc.query("select id from Book where title = :title", Map.of("title", value), SingleColumnRowMapper.newInstance(Long.class));
+        return ids.stream().findFirst();
+
     }
 
     private static class BookMapper implements RowMapper<Book> {

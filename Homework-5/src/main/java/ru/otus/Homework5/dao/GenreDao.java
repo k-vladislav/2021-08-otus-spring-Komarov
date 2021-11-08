@@ -1,6 +1,7 @@
 package ru.otus.Homework5.dao;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.SingleColumnRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -57,8 +58,8 @@ public class GenreDao implements LibraryDao<Genre> {
 
     @Override
     public Optional<Long> getIdByValue(String value) {
-        Long id = jdbc.queryForObject("select id from Genre where genre=:genre", Map.of("genre", value), Long.class);
-        return Optional.ofNullable(id);
+        List<Long> ids = jdbc.query("select id from Genre where genre = :genre", Map.of("genre", value), SingleColumnRowMapper.newInstance(Long.class));
+        return ids.stream().findFirst();
     }
 
     private static class GenreMapper implements RowMapper<Genre> {
