@@ -1,42 +1,28 @@
 package ru.otus.Homework5.shell;
 
-import org.springframework.shell.standard.ShellComponent;
-import org.springframework.shell.standard.ShellMethod;
-import org.springframework.shell.standard.ShellOption;
-import ru.otus.Homework5.service.AuthorServiceClass;
-import ru.otus.Homework5.service.BookServiceClass;
-import ru.otus.Homework5.service.GenreServiceClass;
+public interface ShellLibraryCommands {
 
-import java.util.Arrays;
-import java.util.Set;
-import java.util.stream.Collectors;
+    void addBookNew(String bookTitle);
 
-@ShellComponent
-public class ShellLibraryCommands {
+    void addAuthor(String bookTitle, String authorLastName);
 
-    private final AuthorServiceClass authorServiceClass;
-    private final BookServiceClass bookServiceClass;
-    private final GenreServiceClass genreServiceClass;
+    void addGenre(String bookTitle, String genre);
 
-    public ShellLibraryCommands(AuthorServiceClass authorServiceClass, BookServiceClass bookServiceClass, GenreServiceClass genreServiceClass) {
-        this.authorServiceClass = authorServiceClass;
-        this.bookServiceClass = bookServiceClass;
-        this.genreServiceClass = genreServiceClass;
-    }
+    void getBook(String bookTitle);
+
+    // void getAuthor(String authorLastName);
+
+    //  void getGenre(String genre);
+
+    void getAllBooks();
+
+    // void getAllAuthors();
+
+    //  void getAllGenres();
+
+    void countBooks();
+
+    void delBook(String bookTitle);
 
 
-    @ShellMethod(value = "Add book to library, max 3 authors, max 3 genres", key = "book-add")
-    void addBook(@ShellOption(value = "--t") String title,
-                 @ShellOption(value = "--a", arity = 3) String[] authors,
-                 @ShellOption(value = "--g", arity = 3) String[] genres) {
-        long bookId = bookServiceClass.insert(title);
-        Set<Long> authorIds = Arrays.stream(authors).map(authorServiceClass::insert).collect(Collectors.toSet());
-        Set<Long> genreIds = Arrays.stream(genres).map(genreServiceClass::insert).collect(Collectors.toSet());
-        System.out.println("Book " + title + " inserted");
-        System.out.println("authorsId:");
-        authorIds.forEach(System.out::println);
-        System.out.println("genreIds");
-        genreIds.forEach(System.out::println);
-    }
 }
-
