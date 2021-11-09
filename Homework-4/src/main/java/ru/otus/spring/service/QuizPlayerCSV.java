@@ -77,6 +77,7 @@ public class QuizPlayerCSV implements QuizPlayer {
         return false;
     }
 
+    @Override
     public void greetUser() {
         User user = UserService.create(msgSrc);
         msgSrc.out("user.greet", new String[]{String.valueOf(user)});

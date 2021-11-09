@@ -10,12 +10,7 @@ import ru.otus.spring.service.QuizPlayerCSV;
 @ConfigurationPropertiesScan
 public class Main {
     public static void main(String[] args) {
-        ApplicationContext ctx = SpringApplication.run(Main.class);
-        QuizPlayerCSV quizPlayerCSV = ctx.getBean(QuizPlayerCSV.class);
-
-        quizPlayerCSV.greetUser();
-
-        quizPlayerCSV.play();
+        SpringApplication.run(Main.class);
     }
 }
 
