@@ -3,10 +3,15 @@ package ru.otus.spring.domain;
 import org.junit.jupiter.api.*;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestComponent;
+import org.springframework.shell.jline.InteractiveShellApplicationRunner;
+import org.springframework.shell.jline.ScriptShellApplicationRunner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@SpringBootTest(properties = {
+        InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
+        ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false"
+})
 @TestComponent
 class AnswerTest {
     private Answer answer;
@@ -20,20 +25,20 @@ class AnswerTest {
     @Test
     @DisplayName("should get correct QuestionId")
     void shouldGetCorrectQuestionId() {
-       assertEquals(5,answer.getQuestionId());
+        assertEquals(5, answer.getQuestionId());
     }
 
     @Test
     @DisplayName("should get correct AnswerId")
     void getAnswerId() {
-        assertEquals(3,answer.getAnswerId());
+        assertEquals(3, answer.getAnswerId());
     }
 
     @Test
     @DisplayName("should be compared by answerId")
     void compareTo() {
-        Answer answerOne = new Answer(5,"text",7);
-        assertTrue(answer.compareTo(answerOne)<0, "Answer is lower than answerOne");
+        Answer answerOne = new Answer(5, "text", 7);
+        assertTrue(answer.compareTo(answerOne) < 0, "Answer is lower than answerOne");
     }
 
     @Test
