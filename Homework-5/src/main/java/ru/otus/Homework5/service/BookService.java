@@ -7,9 +7,9 @@ import ru.otus.Homework5.domain.Book;
 import java.util.Set;
 
 @Service
-public class BookServiceClass extends LibraryServiceClass<Book>{
+public class BookService extends AbstractLibraryService<Book> {
 
-    public BookServiceClass(LibraryDao<Book> dao) {
+    public BookService(LibraryDao<Book> dao) {
         super(dao);
     }
 

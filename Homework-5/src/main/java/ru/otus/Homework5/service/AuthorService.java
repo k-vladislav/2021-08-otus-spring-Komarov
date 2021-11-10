@@ -5,9 +5,9 @@ import ru.otus.Homework5.dao.LibraryDao;
 import ru.otus.Homework5.domain.Author;
 
 @Service
-public class AuthorServiceClass extends LibraryServiceClass<Author>{
+public class AuthorService extends AbstractLibraryService<Author> {
 
-    public AuthorServiceClass(LibraryDao<Author> dao) {
+    public AuthorService(LibraryDao<Author> dao) {
         super(dao);
     }
 }

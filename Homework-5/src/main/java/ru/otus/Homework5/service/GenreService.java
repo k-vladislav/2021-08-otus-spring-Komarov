@@ -5,9 +5,9 @@ import ru.otus.Homework5.dao.LibraryDao;
 import ru.otus.Homework5.domain.Genre;
 
 @Service
-public class GenreServiceClass extends LibraryServiceClass<Genre>{
+public class GenreService extends AbstractLibraryService<Genre> {
 
-    public GenreServiceClass(LibraryDao<Genre> dao) {
+    public GenreService(LibraryDao<Genre> dao) {
         super(dao);
     }
 }

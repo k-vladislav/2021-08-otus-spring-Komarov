@@ -5,11 +5,11 @@ import ru.otus.Homework5.dao.LibraryDao;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class LibraryServiceClass<T> {
+public abstract class AbstractLibraryService<T> {
 
     private final LibraryDao<T> dao;
 
-     LibraryServiceClass(LibraryDao<T> dao) {
+     AbstractLibraryService(LibraryDao<T> dao) {
         this.dao = dao;
     }
 
