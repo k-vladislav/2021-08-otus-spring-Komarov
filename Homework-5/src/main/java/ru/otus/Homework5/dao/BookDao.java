@@ -9,6 +9,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.otus.Homework5.domain.Book;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -31,12 +32,17 @@ public class BookDao implements LibraryDao<Book> {
     }
 
     @Override
-    public long insert(String value) {
+    public long insert(String title) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("title", value);
+        params.addValue("title", title);
         jdbc.update("insert into Book (`TITLE`) values (:title)", params, keyHolder);
         return keyHolder.getKey().longValue();
+    }
+
+    @Override
+    public void delete(String title) {
+        jdbc.update("delete from Book where title = :title", Map.of("title", title));
     }
 
     @Override
@@ -52,13 +58,8 @@ public class BookDao implements LibraryDao<Book> {
     }
 
     @Override
-    public void deleteById(long id) {
-        jdbc.update("delete from Book where id = :id", Map.of("id", id));
-    }
-
-    @Override
-    public Optional<Long> getIdByValue(String value) {
-        List<Long> ids = jdbc.query("select id from Book where title = :title", Map.of("title", value), SingleColumnRowMapper.newInstance(Long.class));
+    public Optional<Long> getId(String title) {
+        List<Long> ids = jdbc.query("select id from Book where title = :title", Map.of("title", title), SingleColumnRowMapper.newInstance(Long.class));
         return ids.stream().findFirst();
 
     }
@@ -71,4 +72,5 @@ public class BookDao implements LibraryDao<Book> {
             return new Book(title);
         }
     }
+
 }

@@ -31,12 +31,17 @@ public class GenreDao implements LibraryDao<Genre> {
     }
 
     @Override
-    public long insert(String value) {
+    public long insert(String genre) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("genre", value);
+        params.addValue("genre", genre);
         jdbc.update("insert into Genre (`GENRE`) values (:genre)", params, keyHolder);
         return keyHolder.getKey().longValue();
+    }
+
+    @Override
+    public void delete(String genre) {
+        jdbc.update("delete from Genre where genre = :genre", Map.of("genre", genre));
     }
 
     @Override
@@ -52,13 +57,8 @@ public class GenreDao implements LibraryDao<Genre> {
     }
 
     @Override
-    public void deleteById(long id) {
-        jdbc.update("delete from Genre where id = :id", Map.of("id", id));
-    }
-
-    @Override
-    public Optional<Long> getIdByValue(String value) {
-        List<Long> ids = jdbc.query("select id from Genre where genre = :genre", Map.of("genre", value), SingleColumnRowMapper.newInstance(Long.class));
+    public Optional<Long> getId(String genre) {
+        List<Long> ids = jdbc.query("select id from Genre where genre = :genre", Map.of("genre", genre), SingleColumnRowMapper.newInstance(Long.class));
         return ids.stream().findFirst();
     }
 

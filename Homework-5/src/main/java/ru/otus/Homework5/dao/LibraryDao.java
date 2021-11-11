@@ -5,15 +5,16 @@ import java.util.Optional;
 
 public interface LibraryDao<T> {
 
-    int count();
-
     long insert(String value);
+
+    void delete(String value);
+
+    int count();
 
     Optional<T> getById(long id);
 
     Optional<List<T>> getAll();
 
-    void deleteById(long id);
+    Optional<Long> getId(String value);
 
-    Optional<Long> getIdByValue(String value);
 }

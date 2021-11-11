@@ -31,10 +31,10 @@ public class AuthorDao implements LibraryDao<Author> {
     }
 
     @Override
-    public long insert(String value) {
+    public long insert(String lastName) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("lastName", value);
+        params.addValue("lastName", lastName);
         jdbc.update("insert into Author (`LAST_NAME`) values (:lastName)", params, keyHolder);
         return keyHolder.getKey().longValue();
     }
@@ -52,13 +52,13 @@ public class AuthorDao implements LibraryDao<Author> {
     }
 
     @Override
-    public void deleteById(long id) {
-        jdbc.update("delete from Author where id = :id", Map.of("id", id));
+    public void delete(String lastName) {
+        jdbc.update("delete from Author where last_name = :value", Map.of("id", lastName));
     }
 
     @Override
-    public Optional<Long> getIdByValue(String value) {
-        List<Long> ids = jdbc.query("select id from Author where last_name = :lastName", Map.of("lastName", value), SingleColumnRowMapper.newInstance(Long.class));
+    public Optional<Long> getId(String lastName) {
+        List<Long> ids = jdbc.query("select id from Author where last_name = :lastName", Map.of("lastName", lastName), SingleColumnRowMapper.newInstance(Long.class));
         return ids.stream().findFirst();
     }
 
