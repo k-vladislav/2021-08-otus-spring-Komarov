@@ -40,6 +40,14 @@ public class AuthorDao implements LibraryDao<Author> {
     }
 
     @Override
+    public int update(long id, String newLastName) {
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("id", id);
+        params.addValue("newLastName",newLastName);
+        return jdbc.update("update Author set last_name = :newlastName where id = :id", params);
+    }
+
+    @Override
     public Optional<Author> getById(long id) {
         Author author = jdbc.queryForObject("select * from Author where id = :id", Map.of("id", id), new AuthorMapper());
         return Optional.ofNullable(author);

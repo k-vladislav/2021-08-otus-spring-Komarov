@@ -41,6 +41,14 @@ public class BookDao implements LibraryDao<Book> {
     }
 
     @Override
+    public int update(long id, String newTitle) {
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("id", id);
+        params.addValue("newTitle",newTitle);
+        return jdbc.update("update Book set title = :newTitle where id = :id", params);
+    }
+
+    @Override
     public void delete(String title) {
         jdbc.update("delete from Book where title = :title", Map.of("title", title));
     }

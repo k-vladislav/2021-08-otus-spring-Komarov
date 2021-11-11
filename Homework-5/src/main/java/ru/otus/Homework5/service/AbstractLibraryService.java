@@ -9,20 +9,26 @@ public abstract class AbstractLibraryService<T> {
 
     private final LibraryDao<T> dao;
 
-     AbstractLibraryService(LibraryDao<T> dao) {
+    AbstractLibraryService(LibraryDao<T> dao) {
         this.dao = dao;
+    }
+
+    public long add(String value) {
+/*        Optional<Long> idOpt = dao.getId(value);
+        if (idOpt.isEmpty()) {
+            return dao.add(value);
+        } else {
+            return idOpt.get();
+        }*/
+        return dao.insert(value);
+    }
+
+    public int update (long id, String newValue) {
+        return dao.update(id,newValue);
     }
 
     public int count() {
         return dao.count();
-    }
-
-    public long insert(String value) {
-        if (dao.getIdByValue(value).isEmpty()) {
-            return dao.insert(value);
-        } else {
-            return dao.getIdByValue(value).get();
-        }
     }
 
     public Optional<T> getById(long id) {
@@ -33,11 +39,12 @@ public abstract class AbstractLibraryService<T> {
         return dao.getAll();
     }
 
-    public void deleteById(long id) {
-        dao.deleteById(id);
+    public void delete(String value) {
+        dao.delete(value);
     }
 
-    public Optional<Long> getIdByValue(String value) {
-        return dao.getIdByValue(value);
+    public Optional<Long> getId(String value) {
+        return dao.getId(value);
     }
+
 }

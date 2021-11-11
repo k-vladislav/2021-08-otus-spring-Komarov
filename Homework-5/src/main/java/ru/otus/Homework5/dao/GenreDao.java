@@ -40,6 +40,14 @@ public class GenreDao implements LibraryDao<Genre> {
     }
 
     @Override
+    public int update(long id, String newGenre) {
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("id", id);
+        params.addValue("newGenre",newGenre);
+        return jdbc.update("update Genre set genre = :genre where id = :id", params);
+    }
+
+    @Override
     public void delete(String genre) {
         jdbc.update("delete from Genre where genre = :genre", Map.of("genre", genre));
     }

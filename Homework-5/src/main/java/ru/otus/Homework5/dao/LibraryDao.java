@@ -7,6 +7,8 @@ public interface LibraryDao<T> {
 
     long insert(String value);
 
+    int update(long id, String newValue);
+
     void delete(String value);
 
     int count();
