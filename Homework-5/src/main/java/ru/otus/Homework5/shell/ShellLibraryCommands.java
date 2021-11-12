@@ -2,27 +2,34 @@ package ru.otus.Homework5.shell;
 
 public interface ShellLibraryCommands {
 
-    void addBookNew(String bookTitle);
+    void addBook(String title);
 
-    void addAuthor(String bookTitle, String authorLastName);
+    void showBook(String title);
 
-    void addGenre(String bookTitle, String genre);
+    void updateBook(String oldTitle, String newTitle);
 
-    void getBook(String bookTitle);
+    void deleteBook(String title);
 
-    // void getAuthor(String authorLastName);
 
-    //  void getGenre(String genre);
+    void addAuthorForBook(String title, String lastName);
 
-    void getAllBooks();
+    void showBooksOfAuthor(String lastname);
 
-    // void getAllAuthors();
+    void updateAuthor(String oldLastName, String newLastName);
 
-    //  void getAllGenres();
+    void deleteAuthorForBook(String title, String lastName);
 
-    void countBooks();
+    void deleteAuthorTotally(String lastName);
 
-    void delBook(String bookTitle);
 
+    void addGenreForBook(String title, String genre);
+
+    void showBooksOfGenre(String genre);
+
+    void updateGenre(String oldGenre, String newGenre);
+
+    void deleteGenreForBook(String title, String genre);
+
+    void deleteAGenreTotally(String genre);
 
 }

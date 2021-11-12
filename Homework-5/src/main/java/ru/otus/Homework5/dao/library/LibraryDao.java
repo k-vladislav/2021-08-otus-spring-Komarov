@@ -1,4 +1,4 @@
-package ru.otus.Homework5.dao;
+package ru.otus.Homework5.dao.library;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,7 +9,7 @@ public interface LibraryDao<T> {
 
     int update(long id, String newValue);
 
-    void delete(String value);
+    int delete(long id);
 
     int count();
 

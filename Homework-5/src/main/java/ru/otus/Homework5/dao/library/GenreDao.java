@@ -1,4 +1,4 @@
-package ru.otus.Homework5.dao;
+package ru.otus.Homework5.dao.library;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
@@ -48,8 +48,8 @@ public class GenreDao implements LibraryDao<Genre> {
     }
 
     @Override
-    public void delete(String genre) {
-        jdbc.update("delete from Genre where genre = :genre", Map.of("genre", genre));
+    public int delete(long id) {
+       return jdbc.update("delete from Genre where id = :id", Map.of("id", id));
     }
 
     @Override

@@ -3,98 +3,126 @@ package ru.otus.Homework5.shell;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
-import ru.otus.Homework5.service.AuthorService;
-import ru.otus.Homework5.service.BookService;
-import ru.otus.Homework5.service.GenreService;
-import ru.otus.Homework5.service.LinkLibraryService;
+import ru.otus.Homework5.domain.Book;
+import ru.otus.Homework5.service.WrapLibraryService;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @ShellComponent
 public class ShellLibraryCommandsImpl implements ShellLibraryCommands {
 
-    private final AuthorService authorService;
-    private final BookService bookService;
-    private final GenreService genreService;
-    private final LinkLibraryService linkLibraryService;
+    private final WrapLibraryService library;
 
-    public ShellLibraryCommandsImpl(AuthorService authorService, BookService bookService, GenreService genreService, LinkLibraryService linkLibraryService) {
-        this.authorService = authorService;
-        this.bookService = bookService;
-        this.genreService = genreService;
-        this.linkLibraryService = linkLibraryService;
-    }
-
-
-    @ShellMethod(value = "Add book to library, max 3 authors, max 3 genres", key = "book-add")
-    void addBook(@ShellOption(value = "--t") String title,
-                 @ShellOption(value = "--a", arity = 3) String[] authors,
-                 @ShellOption(value = "--g", arity = 3) String[] genres) {
-        long bookId = bookService.insert(title);
-        Set<Long> authorIds = Arrays.stream(authors).map(authorService::insert).collect(Collectors.toSet());
-        Set<Long> genreIds = Arrays.stream(genres).map(genreService::insert).collect(Collectors.toSet());
-
-        authorIds.forEach(authorId -> linkLibraryService.linkBookAuthor(bookId, authorId));
-        genreIds.forEach(genreId -> linkLibraryService.linkBookGenre(bookId, genreId));
+    public ShellLibraryCommandsImpl(WrapLibraryService library) {
+        this.library = library;
     }
 
     @Override
-    @ShellMethod(value = "add book new", key = "addbook")
-    public void addBookNew(String bookTitle) {
-        long book_id = bookService.insert(bookTitle);
-        if (book_id > 0) System.out.println("Book " + bookTitle + " added, book_id = " + book_id);
+    @ShellMethod(value = "Add book, prints ID of inserted or existing book",group = "book")
+    public void addBook(@ShellOption String title) {
+        long id = library.addBook(title);
+        System.out.println("Book ID = " + id);
     }
 
     @Override
-    @ShellMethod(value = "add author", key = "addauthor")
-    public void addAuthor(@ShellOption String bookTitle, @ShellOption String authorLastName) {
-        Optional<Long> idByValue = bookService.getIdByValue(bookTitle);
-        if (idByValue.isPresent()) {
-            long authorId = authorService.insert(authorLastName);
-            Long bookId = idByValue.get();
-            linkLibraryService.linkBookAuthor(bookId, authorId);
-
-        } else {
-            System.out.println("Book " + bookTitle + " not found, cancel");
-        }
+    @ShellMethod(value = "Show book",group = "book")
+    public void showBook(@ShellOption String title) {
+        Optional<Book> book = library.showBook(title);
+        book.ifPresentOrElse(System.out::println, () -> System.out.println("Book not found"));
     }
 
     @Override
-    @ShellMethod(value = "add genre", key = "addgenre")
-    public void addGenre(@ShellOption String bookTitle, @ShellOption String genre) {
-        Optional<Long> idByValue = bookService.getIdByValue(bookTitle);
-        if (idByValue.isPresent()) {
-            long genreId = genreService.insert(genre);
-            Long bookId = idByValue.get();
-            linkLibraryService.linkBookGenre(bookId, genreId);
-        }
+    @ShellMethod(value = "Update book title",group = "book")
+    public void updateBook(@ShellOption String oldTitle, @ShellOption String newTitle) {
+        int i = library.updateBook(oldTitle, newTitle);
+        if (i != 0) System.out.println("Update book OK");
+        else System.out.println("Update book FAIL");
     }
 
     @Override
-    @ShellMethod(value = "get book", key = "getbook")
-    public void getBook(@ShellOption String bookTitle) {
-        Optional<Long> idByValue = bookService.getIdByValue(bookTitle);
-        if (idByValue.isPresent()) {
-            System.out.println(bookService.getById(idByValue.get()).get()); //todo optional check
-        }
+    @ShellMethod(value = "Delete book",group = "book")
+    public void deleteBook(@ShellOption String title) {
+        int i = library.deleteBook(title);
+        if (i != 0) System.out.println("Delete book OK");
+        else System.out.println("Delete book FAIL");
     }
 
     @Override
-    public void getAllBooks() {
-
+    @ShellMethod(value = "Add book for author",group = "author")
+    public void addAuthorForBook(@ShellOption String title, @ShellOption String lastName) {
+        long id = library.addAuthorForBook(title, lastName);
+        if (id != 0) System.out.println("Add author for book OK");
+        else System.out.println("Add author for book FAIL");
     }
 
     @Override
-    public void countBooks() {
-
+    @ShellMethod(value = "Show books for author",group = "author")
+    public void showBooksOfAuthor(@ShellOption String lastname) {
+        List<Book> books = library.showBooksOfAuthor(lastname);
+        books.forEach(book -> System.out.println(book.getTitle()));
     }
 
     @Override
-    public void delBook(String bookTitle) {
+    @ShellMethod(value = "Update author",group = "author")
+    public void updateAuthor(@ShellOption String oldLastName, @ShellOption String newLastName) {
+        int i = library.updateAuthor(oldLastName, newLastName);
+        if (i != 0) System.out.println("Update author OK");
+        else System.out.println("Update author FAIL");
+    }
 
+    @Override
+    @ShellMethod(value = "Delete author for book",group = "author")
+    public void deleteAuthorForBook(@ShellOption String title, @ShellOption String lastName) {
+        long id = library.deleteAuthorForBook(title, lastName);
+        if (id != 0) System.out.println("Delete author for book OK");
+        else System.out.println("Delete author for book FAIL");
+    }
+
+    @Override
+    @ShellMethod(value = "Delete author",group = "author")
+    public void deleteAuthorTotally(@ShellOption String lastName) {
+        int i = library.deleteAuthorTotally(lastName);
+        if (i != 0) System.out.println("Delete author OK");
+        else System.out.println("Delete author FAIL");
+    }
+
+    @Override
+    @ShellMethod(value = "Add genre for book",group = "genre")
+    public void addGenreForBook(@ShellOption String title, @ShellOption String genre) {
+        long id = library.addGenreForBook(title, genre);
+        if (id != 0) System.out.println("Add genre for book OK");
+        else System.out.println("Add genre for book FAIL");
+    }
+
+    @Override
+    @ShellMethod(value = "Show books of genre",group = "genre")
+    public void showBooksOfGenre(@ShellOption String genre) {
+        List<Book> books = library.showBooksOfGenre(genre);
+        books.forEach(book -> System.out.println(book.getTitle()));
+    }
+
+    @Override
+    @ShellMethod(value = "Update genre",group = "genre")
+    public void updateGenre(@ShellOption String oldGenre, @ShellOption String newGenre) {
+        int i = library.updateGenre(oldGenre, newGenre);
+        if (i != 0) System.out.println("Update genre OK");
+        else System.out.println("Update genre FAIL");
+    }
+
+    @Override
+    @ShellMethod(value = "Delete genre for book",group = "genre")
+    public void deleteGenreForBook(@ShellOption String title, @ShellOption String genre) {
+        long id = library.deleteGenreForBook(title, genre);
+        if (id != 0) System.out.println("Delete genre for book OK");
+        else System.out.println("Delete genre for book FAIL");
+    }
+
+    @Override
+    @ShellMethod(value = "Delete genre",group = "genre")
+    public void deleteAGenreTotally(@ShellOption String genre) {
+        int i = library.deleteAGenreTotally(genre);
+        if (i != 0) System.out.println("Delete genre OK");
+        else System.out.println("Delete genre FAIL");
     }
 }
-

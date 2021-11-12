@@ -1,4 +1,4 @@
-package ru.otus.Homework5.dao;
+package ru.otus.Homework5.dao.library;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
@@ -9,7 +9,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.otus.Homework5.domain.Book;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -49,8 +48,8 @@ public class BookDao implements LibraryDao<Book> {
     }
 
     @Override
-    public void delete(String title) {
-        jdbc.update("delete from Book where title = :title", Map.of("title", title));
+    public int delete(long id) {
+        return jdbc.update("delete from Book where id = :id", Map.of("id", id));
     }
 
     @Override

@@ -1,4 +1,4 @@
-package ru.otus.Homework5.dao;
+package ru.otus.Homework5.dao.library;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
@@ -43,7 +43,7 @@ public class AuthorDao implements LibraryDao<Author> {
     public int update(long id, String newLastName) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("id", id);
-        params.addValue("newLastName",newLastName);
+        params.addValue("newLastName", newLastName);
         return jdbc.update("update Author set last_name = :newlastName where id = :id", params);
     }
 
@@ -60,8 +60,8 @@ public class AuthorDao implements LibraryDao<Author> {
     }
 
     @Override
-    public void delete(String lastName) {
-        jdbc.update("delete from Author where last_name = :value", Map.of("id", lastName));
+    public int delete(long id) {
+        return jdbc.update("delete from Author where id = :id", Map.of("id", id));
     }
 
     @Override
