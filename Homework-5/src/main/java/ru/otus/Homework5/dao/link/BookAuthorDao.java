@@ -27,7 +27,7 @@ public class BookAuthorDao implements BookLinksDao<Author> {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource param = new MapSqlParameterSource();
         param.addValue("bookId", bookId).addValue("authorId", authorId);
-        jdbc.update("insert into Book_Author (BOOK_ID,AUTHOR_ID) values (:bookid, :authorId)", param, keyHolder);
+        jdbc.update("insert into Book_Author (BOOK_ID,AUTHOR_ID) values (:bookId, :authorId)", param, keyHolder);
         return keyHolder.getKey().longValue();
     }
 

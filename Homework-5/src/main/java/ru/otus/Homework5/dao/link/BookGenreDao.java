@@ -23,7 +23,7 @@ public class BookGenreDao implements BookLinksDao<Genre> {
     @Override
     public long link(long bookId, long genreId) {
         Map<String, Long> params = Map.of("bookId", bookId, "genreId", genreId);
-        return jdbc.update("insert into Book_Genre (BOOK_ID,GENRE_ID) values (:bookid, :genreId)", params);
+        return jdbc.update("insert into Book_Genre (BOOK_ID,GENRE_ID) values (:bookId, :genreId)", params);
     }
 
     @Override

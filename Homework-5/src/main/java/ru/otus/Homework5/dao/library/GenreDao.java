@@ -1,7 +1,7 @@
 package ru.otus.Homework5.dao.library;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.SingleColumnRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -43,13 +43,13 @@ public class GenreDao implements LibraryDao<Genre> {
     public int update(long id, String newGenre) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("id", id);
-        params.addValue("newGenre",newGenre);
-        return jdbc.update("update Genre set genre = :genre where id = :id", params);
+        params.addValue("newGenre", newGenre);
+        return jdbc.update("update Genre set genre = :newGenre where id = :id", params);
     }
 
     @Override
     public int delete(long id) {
-       return jdbc.update("delete from Genre where id = :id", Map.of("id", id));
+        return jdbc.update("delete from Genre where id = :id", Map.of("id", id));
     }
 
     @Override
@@ -59,15 +59,18 @@ public class GenreDao implements LibraryDao<Genre> {
     }
 
     @Override
-    public Optional<List<Genre>> getAll() {
-        List<Genre> genres = jdbc.query("select * from Genre", new GenreMapper());
-        return Optional.ofNullable(genres);
+    public List<Genre> getAll() {
+        return jdbc.query("select * from Genre", new GenreMapper());
     }
 
     @Override
     public Optional<Long> getId(String genre) {
-        List<Long> ids = jdbc.query("select id from Genre where genre = :genre", Map.of("genre", genre), SingleColumnRowMapper.newInstance(Long.class));
-        return ids.stream().findFirst();
+        try {
+            Long id = jdbc.queryForObject("select id from Genre where genre = :genre", Map.of("genre", genre), Long.class);
+            return Optional.ofNullable(id);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     private static class GenreMapper implements RowMapper<Genre> {

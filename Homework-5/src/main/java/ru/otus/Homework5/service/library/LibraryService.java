@@ -12,7 +12,7 @@ public interface LibraryService<T> {
 
     Optional<T> getById(long id);
 
-    Optional<List<T>> getAll();
+    List<T> getAll();
 
     int delete(long id);
 

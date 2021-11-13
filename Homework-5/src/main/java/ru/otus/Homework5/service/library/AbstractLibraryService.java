@@ -45,7 +45,7 @@ public abstract class AbstractLibraryService<T> implements LibraryService<T> {
     }
 
     @Override
-    public Optional<List<T>> getAll() {
+    public List<T> getAll() {
         return dao.getAll();
     }
 

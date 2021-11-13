@@ -1,7 +1,7 @@
 package ru.otus.Homework5.dao.library;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.SingleColumnRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -43,7 +43,7 @@ public class BookDao implements LibraryDao<Book> {
     public int update(long id, String newTitle) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("id", id);
-        params.addValue("newTitle",newTitle);
+        params.addValue("newTitle", newTitle);
         return jdbc.update("update Book set title = :newTitle where id = :id", params);
     }
 
@@ -59,16 +59,18 @@ public class BookDao implements LibraryDao<Book> {
     }
 
     @Override
-    public Optional<List<Book>> getAll() {
-        List<Book> books = jdbc.query("select * from Book", new BookMapper());
-        return Optional.ofNullable(books);
+    public List<Book> getAll() {
+        return jdbc.query("select * from Book", new BookMapper());
     }
 
     @Override
     public Optional<Long> getId(String title) {
-        List<Long> ids = jdbc.query("select id from Book where title = :title", Map.of("title", title), SingleColumnRowMapper.newInstance(Long.class));
-        return ids.stream().findFirst();
-
+        try {
+            Long id = jdbc.queryForObject("select id from Book where title = :title", Map.of("title", title), Long.class);
+            return Optional.ofNullable(id);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     private static class BookMapper implements RowMapper<Book> {

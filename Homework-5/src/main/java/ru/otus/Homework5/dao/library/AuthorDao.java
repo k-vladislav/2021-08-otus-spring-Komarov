@@ -1,7 +1,7 @@
 package ru.otus.Homework5.dao.library;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.SingleColumnRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -44,7 +44,7 @@ public class AuthorDao implements LibraryDao<Author> {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("id", id);
         params.addValue("newLastName", newLastName);
-        return jdbc.update("update Author set last_name = :newlastName where id = :id", params);
+        return jdbc.update("update Author set last_name = :newLastName where id = :id", params);
     }
 
     @Override
@@ -54,9 +54,8 @@ public class AuthorDao implements LibraryDao<Author> {
     }
 
     @Override
-    public Optional<List<Author>> getAll() {
-        List<Author> authors = jdbc.query("select * from Author", new AuthorMapper());
-        return Optional.ofNullable(authors);
+    public List<Author> getAll() {
+        return jdbc.query("select * from Author", new AuthorMapper());
     }
 
     @Override
@@ -66,8 +65,12 @@ public class AuthorDao implements LibraryDao<Author> {
 
     @Override
     public Optional<Long> getId(String lastName) {
-        List<Long> ids = jdbc.query("select id from Author where last_name = :lastName", Map.of("lastName", lastName), SingleColumnRowMapper.newInstance(Long.class));
-        return ids.stream().findFirst();
+        try {
+            Long id = jdbc.queryForObject("select id from Author where last_name = :lastName", Map.of("lastName", lastName), Long.class);
+            return Optional.ofNullable(id);
+        }catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     private static class AuthorMapper implements RowMapper<Author> {
