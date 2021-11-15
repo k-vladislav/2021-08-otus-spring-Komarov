@@ -3,7 +3,7 @@ package ru.otus.Homework5.service.link;
 import java.util.List;
 import java.util.Optional;
 
-public interface LinkLibraryService<T> {
+public interface LinkingService<T> {
 
     long link(long bookId, long id);
 

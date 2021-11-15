@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Repository
 @SuppressWarnings({"SqlNoDataSourceInspection", "ConstantConditions", "SqlDialectInspection"}) //todo check warns
-public class BookAuthorDao implements BookLinksDao<Author> {
+public class BookAuthorDao implements LinkingDao<Author> {
 
     private final NamedParameterJdbcOperations jdbc;
 

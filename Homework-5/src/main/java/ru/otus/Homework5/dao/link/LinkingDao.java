@@ -6,7 +6,7 @@ import java.util.Optional;
 /**
  * Interface for Book_Author and Book_Genre linking tables
  */
-public interface BookLinksDao<T> {
+public interface LinkingDao<T> {
 
     /**
      * Link id (of author or genre) to book (by inserting their IDs to table)

@@ -6,7 +6,7 @@ import ru.otus.Homework5.domain.Author;
 import ru.otus.Homework5.domain.Book;
 import ru.otus.Homework5.domain.Genre;
 import ru.otus.Homework5.service.library.LibraryService;
-import ru.otus.Homework5.service.link.LinkLibraryService;
+import ru.otus.Homework5.service.link.LinkingService;
 
 import java.util.Collections;
 import java.util.List;
@@ -14,15 +14,15 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class WrapLibraryServiceImpl implements WrapLibraryService {
+public class MainLibraryServiceImpl implements MainLibraryService {
 
     private final LibraryService<Book> bookService;
     private LibraryService<Author> authorService;
     private LibraryService<Genre> genreService;
-    private LinkLibraryService<Author> linkAuthor;
-    private LinkLibraryService<Genre> linkGenre;
+    private LinkingService<Author> linkAuthor;
+    private LinkingService<Genre> linkGenre;
 
-    public WrapLibraryServiceImpl(LibraryService<Book> bookService) {
+    public MainLibraryServiceImpl(LibraryService<Book> bookService) {
         this.bookService = bookService;
     }
 
@@ -37,12 +37,12 @@ public class WrapLibraryServiceImpl implements WrapLibraryService {
     }
 
     @Autowired(required = false)
-    public void setLinkAuthor(LinkLibraryService<Author> linkAuthor) {
+    public void setLinkAuthor(LinkingService<Author> linkAuthor) {
         this.linkAuthor = linkAuthor;
     }
 
     @Autowired(required = false)
-    public void setLinkGenre(LinkLibraryService<Genre> linkGenre) {
+    public void setLinkGenre(LinkingService<Genre> linkGenre) {
         this.linkGenre = linkGenre;
     }
 

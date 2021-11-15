@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Repository
-@SuppressWarnings({"SqlNoDataSourceInspection", "ConstantConditions", "SqlDialectInspection"}) //todo check warns
+@SuppressWarnings({"SqlNoDataSourceInspection", "ConstantConditions", "SqlDialectInspection"})
 public class GenreDao implements LibraryDao<Genre> {
 
     private final NamedParameterJdbcOperations jdbc;

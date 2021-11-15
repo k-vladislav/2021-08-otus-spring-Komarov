@@ -1,13 +1,13 @@
 package ru.otus.Homework5.service.link;
 
 import org.springframework.stereotype.Service;
-import ru.otus.Homework5.dao.link.BookLinksDao;
+import ru.otus.Homework5.dao.link.LinkingDao;
 import ru.otus.Homework5.domain.Author;
 
 @Service
-public class BookAuthorService extends AbstractLinkLibraryService<Author> {
+public class BookAuthorService extends AbstractLinkingService<Author> {
 
-    public BookAuthorService(BookLinksDao<Author> dao) {
+    public BookAuthorService(LinkingDao<Author> dao) {
         super(dao);
     }
 }

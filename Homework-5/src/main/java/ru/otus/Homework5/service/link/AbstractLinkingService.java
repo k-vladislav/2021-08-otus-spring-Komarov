@@ -1,15 +1,15 @@
 package ru.otus.Homework5.service.link;
 
-import ru.otus.Homework5.dao.link.BookLinksDao;
+import ru.otus.Homework5.dao.link.LinkingDao;
 
 import java.util.List;
 import java.util.Optional;
 
-public abstract class AbstractLinkLibraryService<T> implements LinkLibraryService<T> {
+public abstract class AbstractLinkingService<T> implements LinkingService<T> {
 
-    private final BookLinksDao<T> dao;
+    private final LinkingDao<T> dao;
 
-    public AbstractLinkLibraryService(BookLinksDao<T> dao) {
+    public AbstractLinkingService(LinkingDao<T> dao) {
         this.dao = dao;
     }
 

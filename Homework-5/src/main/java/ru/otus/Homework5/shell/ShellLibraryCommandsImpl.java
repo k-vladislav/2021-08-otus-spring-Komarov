@@ -4,7 +4,7 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import ru.otus.Homework5.domain.Book;
-import ru.otus.Homework5.service.WrapLibraryService;
+import ru.otus.Homework5.service.MainLibraryService;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,9 +12,9 @@ import java.util.Optional;
 @ShellComponent(value = "Library commands")
 public class ShellLibraryCommandsImpl implements ShellLibraryCommands {
 
-    private final WrapLibraryService library;
+    private final MainLibraryService library;
 
-    public ShellLibraryCommandsImpl(WrapLibraryService library) {
+    public ShellLibraryCommandsImpl(MainLibraryService library) {
         this.library = library;
     }
 

@@ -5,17 +5,15 @@ import ru.otus.Homework5.domain.Book;
 import java.util.List;
 import java.util.Optional;
 
-public interface WrapLibraryService {
+public interface MainLibraryService {
 
+    //Book
     long addBook(String title);
-
     Optional<Book> showBook(String title);
-
     int updateBook(String oldTitle, String newTitle);
-
     int deleteBook(String title);
 
-
+    //Author
     long addAuthorForBook(String title, String lastName);
 
     List<Book> showBooksOfAuthor(String lastname);
@@ -26,7 +24,7 @@ public interface WrapLibraryService {
 
     int deleteAuthorTotally(String lastName);
 
-
+    //Genre
     long addGenreForBook(String title, String genre);
 
     List<Book> showBooksOfGenre(String genre);
