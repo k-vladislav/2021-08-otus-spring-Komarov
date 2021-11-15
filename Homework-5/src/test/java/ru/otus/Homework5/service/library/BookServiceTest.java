@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestComponent;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.shell.jline.InteractiveShellApplicationRunner;
+import org.springframework.shell.jline.ScriptShellApplicationRunner;
 import ru.otus.Homework5.dao.library.LibraryDao;
 import ru.otus.Homework5.domain.Book;
 
@@ -14,7 +16,11 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = BookService.class)
+@SpringBootTest(classes = BookService.class,
+        properties = {
+                InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
+                ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false"
+        })
 @TestComponent
 class BookServiceTest {
     @MockBean
