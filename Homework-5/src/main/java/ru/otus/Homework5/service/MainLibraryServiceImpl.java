@@ -12,9 +12,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
-public class MainLibraryServiceImpl implements MainLibraryService {
+public class MainLibraryServiceImpl implements AuthorCommands, BookCommands, GenreCommands {
 
     private final LibraryService<Book> bookService;
     private LibraryService<Author> authorService;
@@ -54,25 +55,25 @@ public class MainLibraryServiceImpl implements MainLibraryService {
 
     @Override
     public Optional<Book> showBook(String title) {
-        Optional<Long> bookIdOpt = bookService.getId(title);
-        if (bookIdOpt.isPresent()) {
-            long bookId = bookIdOpt.get();
-            List<Author> authors = linkAuthor.getListOfIdByBookId(bookId).stream()
-                    .map(authorService::getById)
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
+
+        return bookService.getId(title).map(bookId -> {
+
+            List<Author> authors = linkAuthor.getListOfIdByBookId(bookId)
+                    .stream().map(authorService::getById)
+                    .flatMap(Optional::stream)
                     .collect(Collectors.toList());
-            List<Genre> genres = linkGenre.getListOfIdByBookId(bookId).stream()
-                    .map(genreService::getById)
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
+
+            List<Genre> genres = linkGenre.getListOfIdByBookId(bookId)
+                    .stream().map(genreService::getById)
+                    .flatMap(Optional::stream)
                     .collect(Collectors.toList());
+
             Book book = new Book(title);
             book.setAuthors(authors);
             book.setGenres(genres);
-            return Optional.of(book);
-        }
-        return Optional.empty();
+
+            return book;
+        });
     }
 
     @Override
@@ -83,42 +84,31 @@ public class MainLibraryServiceImpl implements MainLibraryService {
 
     @Override
     public int deleteBook(String title) {
-        //return book.getId(title).map(book::delete).orElse(0);
-        int res = 0;
-        Optional<Long> bookIdOpt = bookService.getId(title);
-        if (bookIdOpt.isPresent()) {
-            long bookId = bookIdOpt.get();
-            res = bookService.delete(bookId);
+        return bookService.getId(title).map(bookId -> {
+            int res = bookService.delete(bookId);
             linkAuthor.deleteByBookId(bookId);
             linkGenre.deleteByBookId(bookId);
-        }
-        return res;
+            return res;
+        }).orElse(0);
     }
 
     @Override
     public long addAuthorForBook(String title, String lastName) {
-        long linkId = 0L;
-        Optional<Long> bookIdOpt = bookService.getId(title);
-        if (bookIdOpt.isPresent()) {
+        return bookService.getId(title).map(bookId -> {
             long authorId = authorService.add(lastName);
-            linkId = linkAuthor.link(bookIdOpt.get(), authorId);
-        }
-        return linkId;
+            return linkAuthor.link(bookId, authorId);
+        }).orElse(0L);
     }
 
     @Override
     public List<Book> showBooksOfAuthor(String lastName) {
-        Optional<Long> authorIdOpt = authorService.getId(lastName);
-        if (authorIdOpt.isPresent()) {
-            long authorId = authorIdOpt.get();
-            List<Long> listOfBookId = linkAuthor.getListOfBookIdById(authorId);
-            return listOfBookId.stream()
+        return authorService.getId(lastName).map(authorId -> {
+            List<Long> booksId = linkAuthor.getListOfBookIdById(authorId);
+            return booksId.stream()
                     .map(bookService::getById)
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
+                    .flatMap(Optional::stream)
                     .collect(Collectors.toList());
-        }
-        return Collections.emptyList();
+        }).orElse(Collections.emptyList());
     }
 
     @Override
@@ -162,17 +152,14 @@ public class MainLibraryServiceImpl implements MainLibraryService {
 
     @Override
     public List<Book> showBooksOfGenre(String genre) {
-        Optional<Long> genreIdOpt = genreService.getId(genre);
-        if (genreIdOpt.isPresent()) {
-            Long genreId = genreIdOpt.get();
-            List<Long> listOfBookId = linkGenre.getListOfBookIdById(genreId);
-            return listOfBookId.stream()
-                    .map(bookService::getById)
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .collect(Collectors.toList());
-        }
-        return Collections.emptyList();
+        List<Long> booksId = genreService.getId(genre)
+                .map(genreId -> linkGenre.getListOfBookIdById(genreId))
+                .orElse(Collections.emptyList());
+
+        return booksId.stream()
+                .map(bookService::getById)
+                .map(Optional::get)
+                .collect(Collectors.toList());
     }
 
     @Override
