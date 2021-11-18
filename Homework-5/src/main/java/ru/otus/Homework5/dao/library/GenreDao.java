@@ -27,7 +27,7 @@ public class GenreDao implements LibraryDao<Genre> {
 
     @Override
     public int count() {
-        return jdbc.queryForObject("select count(*) from Genre", Map.of(), Integer.class);
+        return jdbc.queryForObject("select count(genre) from Genre", Map.of(), Integer.class);
     }
 
     @Override
@@ -54,13 +54,13 @@ public class GenreDao implements LibraryDao<Genre> {
 
     @Override
     public Optional<Genre> getById(long id) {
-        Genre genre = jdbc.queryForObject("select * from Genre where id = :id", Map.of("id", id), new GenreMapper());
+        Genre genre = jdbc.queryForObject("select genre from Genre where id = :id", Map.of("id", id), new GenreMapper());
         return Optional.ofNullable(genre);
     }
 
     @Override
     public List<Genre> getAll() {
-        return jdbc.query("select * from Genre", new GenreMapper());
+        return jdbc.query("select genre from Genre", new GenreMapper());
     }
 
     @Override

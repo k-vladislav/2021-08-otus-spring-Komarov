@@ -76,7 +76,7 @@ public class MainLibraryServiceImpl implements MainLibraryService {
     }
 
     @Override
-    public int updateBook(String oldTitle, String newTitle) {
+    public int updateBookTitle(String oldTitle, String newTitle) {
         Optional<Long> bookIdOpt = bookService.getId(oldTitle);
         return bookIdOpt.map(aLong -> bookService.update(aLong, newTitle)).orElse(0);
     }

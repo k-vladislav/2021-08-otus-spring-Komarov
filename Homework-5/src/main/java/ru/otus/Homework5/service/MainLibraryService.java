@@ -10,7 +10,7 @@ public interface MainLibraryService {
     //Book
     long addBook(String title);
     Optional<Book> showBook(String title);
-    int updateBook(String oldTitle, String newTitle);
+    int updateBookTitle(String oldTitle, String newTitle);
     int deleteBook(String title);
 
     //Author

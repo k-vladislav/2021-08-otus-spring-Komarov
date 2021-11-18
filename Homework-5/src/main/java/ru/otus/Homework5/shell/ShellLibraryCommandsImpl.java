@@ -35,7 +35,7 @@ public class ShellLibraryCommandsImpl implements ShellLibraryCommands {
     @Override
     @ShellMethod(key = "ub", value = "Update book title", group = "book")
     public void updateBook(@ShellOption String oldTitle, @ShellOption String newTitle) {
-        int i = library.updateBook(oldTitle, newTitle);
+        int i = library.updateBookTitle(oldTitle, newTitle);
         if (i != 0) System.out.println("Update book OK");
         else System.out.println("Update book FAIL");
     }

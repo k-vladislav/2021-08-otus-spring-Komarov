@@ -27,7 +27,7 @@ public class BookDao implements LibraryDao<Book> {
 
     @Override
     public int count() {
-        return jdbc.queryForObject("select count(*) from Book", Map.of(), Integer.class);
+        return jdbc.queryForObject("select count(title) from Book", Map.of(), Integer.class);
     }
 
     @Override
@@ -54,13 +54,13 @@ public class BookDao implements LibraryDao<Book> {
 
     @Override
     public Optional<Book> getById(long id) {
-        Book book = jdbc.queryForObject("select * from Book where id = :id", Map.of("id", id), new BookMapper());
+        Book book = jdbc.queryForObject("select title from Book where id = :id", Map.of("id", id), new BookMapper());
         return Optional.ofNullable(book);
     }
 
     @Override
     public List<Book> getAll() {
-        return jdbc.query("select * from Book", new BookMapper());
+        return jdbc.query("select title from Book", new BookMapper());
     }
 
     @Override

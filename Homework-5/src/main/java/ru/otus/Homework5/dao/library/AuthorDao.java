@@ -27,7 +27,7 @@ public class AuthorDao implements LibraryDao<Author> {
 
     @Override
     public int count() {
-        return jdbc.queryForObject("select count(*) from Author", Map.of(), Integer.class);
+        return jdbc.queryForObject("select count(last_name) from Author", Map.of(), Integer.class);
     }
 
     @Override
@@ -49,13 +49,13 @@ public class AuthorDao implements LibraryDao<Author> {
 
     @Override
     public Optional<Author> getById(long id) {
-        Author author = jdbc.queryForObject("select * from Author where id = :id", Map.of("id", id), new AuthorMapper());
+        Author author = jdbc.queryForObject("select last_name from Author where id = :id", Map.of("id", id), new AuthorMapper());
         return Optional.ofNullable(author);
     }
 
     @Override
     public List<Author> getAll() {
-        return jdbc.query("select * from Author", new AuthorMapper());
+        return jdbc.query("select last_name from Author", new AuthorMapper());
     }
 
     @Override
