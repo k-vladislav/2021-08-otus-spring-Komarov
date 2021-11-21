@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Repository
-@SuppressWarnings({"SqlNoDataSourceInspection", "SqlDialectInspection"}) //todo check warns
+@SuppressWarnings({"SqlNoDataSourceInspection", "SqlDialectInspection"})
 public class BookGenreDao implements LinkingDao<Genre> {
 
     private final NamedParameterJdbcOperations jdbc;
@@ -58,7 +58,8 @@ public class BookGenreDao implements LinkingDao<Genre> {
     }
 
     @Override
-    public int delete(long bookId, long id) {
-        return 0; //todo
+    public int delete(long bookId, long genreId) {
+        Map<String, Long> params = Map.of("bookId", bookId, "genreId", genreId);
+        return jdbc.update("delete from Book_Genre where  BOOK_ID = :bookId and AUTHOR_ID = :genreId", params);
     }
 }

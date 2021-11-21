@@ -60,10 +60,24 @@ class BookDaoTest {
 
     @Test
     void getById() {
-        String existingBook = "BOOK_ONE";
-        String nonExistingBook = "BOOK_ZERO";
-        assertThat(dao.getId(existingBook)).isPresent();
-        assertThat(dao.getId(nonExistingBook)).isEmpty();
+        assertThat(dao.getById(1L)).hasValueSatisfying(book -> "BOOK_ONE".equals(book.getTitle()));
+        assertThat(dao.getById(5L)).isEmpty();
+    }
+
+    @Test
+    void getByListOfId() {
+        List<Long> allExistIds = List.of(1L, 2L, 3L);
+        List<Long> partlyExistIds = List.of(1L, 2L, 4L);
+        List<Long> allNonExistIds = List.of(4L, 5L, 6L);
+
+        assertThat(dao.getByListOfId(allExistIds))
+                .anyMatch(book -> "BOOK_ONE".equals(book.getTitle()))
+                .anyMatch(book -> "BOOK_TWO".equals(book.getTitle()))
+                .anyMatch(book -> "BOOK_THREE".equals(book.getTitle()));
+
+        assertThat(dao.getByListOfId(partlyExistIds)).hasSize(2);
+
+        assertThat(dao.getByListOfId(allNonExistIds)).isEmpty();
     }
 
     @Test

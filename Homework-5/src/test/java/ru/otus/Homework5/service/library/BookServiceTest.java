@@ -55,15 +55,28 @@ class BookServiceTest {
     }
 
     @Test
+    @Deprecated
     void getById() {
         when(bookDao.getById(1L)).thenReturn(Optional.of(new Book("BOOK_ONE")));
         assertThat(bookService.getById(1L)).contains(new Book("BOOK_ONE"));
     }
 
     @Test
+    void getByListOfId() {
+        List<Long> partlyExistIds = List.of(1L, 2L, 5L);
+        when(bookDao.getByListOfId(partlyExistIds))
+                .thenReturn(List.of(new Book("BOOK_ONE"), new Book("BOOK_TWO")));
+
+        assertThat(bookService.getByListOfId(partlyExistIds))
+                .hasSize(2)
+                .anyMatch(book ->"BOOK_ONE".equals(book.getTitle()))
+                .anyMatch(book ->"BOOK_TWO".equals(book.getTitle()));
+    }
+
+    @Test
     void getAll() {
         List<Book> books = List.of(new Book("BOOK_ONE")
-                , new Book("BOOK_TOW")
+                , new Book("BOOK_TWO")
                 , new Book("BOOK_THREE"));
         when(bookDao.getAll()).thenReturn(books);
         assertThat(bookService.getAll()).containsAll(books);

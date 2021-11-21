@@ -66,7 +66,7 @@ public interface LinkingDao<T> {
      *
      * @param bookId bookId
      * @param id id of author or genre
-     * @return ??? //todo
+     * @return ??? number of affected rows
      */
     int delete(long bookId, long id);
 

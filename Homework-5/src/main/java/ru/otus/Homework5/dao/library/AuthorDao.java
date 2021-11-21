@@ -50,8 +50,12 @@ public class AuthorDao implements LibraryDao<Author> {
 
     @Override
     public Optional<Author> getById(long id) {
-        Author author = jdbc.queryForObject("select last_name from Author where id = :id", Map.of("id", id), new AuthorMapper());
-        return Optional.ofNullable(author);
+        try {
+            Author author = jdbc.queryForObject("select last_name from Author where id = :id", Map.of("id", id), new AuthorMapper());
+            return Optional.of(author);
+        }catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override

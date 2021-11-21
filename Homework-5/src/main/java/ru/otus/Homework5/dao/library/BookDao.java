@@ -55,8 +55,12 @@ public class BookDao implements LibraryDao<Book> {
 
     @Override
     public Optional<Book> getById(long id) {
-        Book book = jdbc.queryForObject("select title from Book where id = :id", Map.of("id", id), new BookMapper());
-        return Optional.ofNullable(book);
+        try {
+            Book book = jdbc.queryForObject("select title from Book where id = :id", Map.of("id", id), new BookMapper());
+            return Optional.ofNullable(book);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override

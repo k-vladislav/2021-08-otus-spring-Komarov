@@ -59,10 +59,24 @@ class GenreDaoTest {
 
     @Test
     void getById() {
-        String existingGenre = "GENRE_ONE";
-        String nonExistingGenre = "GENRE_ZERO";
-        assertThat(dao.getId(existingGenre)).isPresent();
-        assertThat(dao.getId(nonExistingGenre)).isEmpty();
+        assertThat(dao.getById(1L)).hasValueSatisfying(genre -> "GENRE_ONE".equals(genre.getGenre()));
+        assertThat(dao.getById(5L)).isEmpty();
+    }
+
+    @Test
+    void getByListOfId() {
+        List<Long> allExistIds = List.of(1L, 2L, 3L);
+        List<Long> partlyExistIds = List.of(1L, 2L, 4L);
+        List<Long> allNonExistIds = List.of(4L, 5L, 6L);
+
+        assertThat(dao.getByListOfId(allExistIds))
+                .anyMatch(genre -> "GENRE_ONE".equals(genre.getGenre()))
+                .anyMatch(genre -> "GENRE_TWO".equals(genre.getGenre()))
+                .anyMatch(genre -> "GENRE_THREE".equals(genre.getGenre()));
+
+        assertThat(dao.getByListOfId(partlyExistIds)).hasSize(2);
+
+        assertThat(dao.getByListOfId(allNonExistIds)).isEmpty();
     }
 
     @Test

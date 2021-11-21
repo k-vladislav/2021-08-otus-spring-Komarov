@@ -52,10 +52,24 @@ class AuthorDaoTest {
 
     @Test
     void getById() {
-        String existingAuthor = "AUTHOR_ONE";
-        String nonExistingAuthor = "AUTHOR_ZERO";
-        assertThat(dao.getId(existingAuthor)).isPresent();
-        assertThat(dao.getId(nonExistingAuthor)).isEmpty();
+        assertThat(dao.getById(1L)).hasValueSatisfying(author -> "AUTHOR_ONE".equals(author.getLastName()));
+        assertThat(dao.getById(5L)).isEmpty();
+    }
+
+    @Test
+    void getByListOfId() {
+        List<Long> allExistIds = List.of(1L, 2L, 3L);
+        List<Long> partlyExistIds = List.of(1L, 2L, 4L);
+        List<Long> allNonExistIds = List.of(4L, 5L, 6L);
+
+        assertThat(dao.getByListOfId(allExistIds))
+                .anyMatch(author -> "AUTHOR_ONE".equals(author.getLastName()))
+                .anyMatch(author -> "AUTHOR_TWO".equals(author.getLastName()))
+                .anyMatch(author -> "AUTHOR_THREE".equals(author.getLastName()));
+
+        assertThat(dao.getByListOfId(partlyExistIds)).hasSize(2);
+
+        assertThat(dao.getByListOfId(allNonExistIds)).isEmpty();
     }
 
     @Test

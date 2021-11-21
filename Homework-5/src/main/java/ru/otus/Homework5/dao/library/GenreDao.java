@@ -55,8 +55,12 @@ public class GenreDao implements LibraryDao<Genre> {
 
     @Override
     public Optional<Genre> getById(long id) {
-        Genre genre = jdbc.queryForObject("select genre from Genre where id = :id", Map.of("id", id), new GenreMapper());
-        return Optional.ofNullable(genre);
+        try {
+            Genre genre = jdbc.queryForObject("select genre from Genre where id = :id", Map.of("id", id), new GenreMapper());
+            return Optional.ofNullable(genre);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
