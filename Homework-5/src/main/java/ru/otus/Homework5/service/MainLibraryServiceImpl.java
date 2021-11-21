@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class MainLibraryServiceImpl implements AuthorCommands, BookCommands, GenreCommands {
+public class MainLibraryServiceImpl implements MainLibraryService {
 
     private final LibraryService<Book> bookService;
     private LibraryService<Author> authorService;
