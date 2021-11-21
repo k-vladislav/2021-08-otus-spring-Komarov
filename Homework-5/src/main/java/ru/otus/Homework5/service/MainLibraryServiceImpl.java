@@ -163,13 +163,11 @@ public class MainLibraryServiceImpl implements MainLibraryService {
 
     @Override
     public int deleteAGenreTotally(String genre) {
-        int delete = 0;
-        Optional<Long> genreIdOpt = genreService.getId(genre);
-        if (genreIdOpt.isPresent()) {
-            long genreId = genreIdOpt.get();
-            delete = genreService.delete(genreId);
+
+        return genreService.getId(genre).map(genreId -> {
             linkGenre.deleteById(genreId);
-        }
-        return delete;
+            return genreService.delete(genreId);
+        }).orElse(0);
+
     }
 }
