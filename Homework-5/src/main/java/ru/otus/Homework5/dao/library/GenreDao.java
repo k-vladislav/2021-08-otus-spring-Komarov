@@ -4,6 +4,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -56,6 +57,12 @@ public class GenreDao implements LibraryDao<Genre> {
     public Optional<Genre> getById(long id) {
         Genre genre = jdbc.queryForObject("select genre from Genre where id = :id", Map.of("id", id), new GenreMapper());
         return Optional.ofNullable(genre);
+    }
+
+    @Override
+    public List<Genre> getByListOfId(List<Long> idList) {
+        SqlParameterSource parameterSource = new MapSqlParameterSource("idList", idList);
+        return jdbc.query("select genre from Genre where id in (:idList)", parameterSource, new GenreMapper());
     }
 
     @Override

@@ -10,7 +10,10 @@ public interface LibraryService<T> {
 
     int count();
 
+    @Deprecated
     Optional<T> getById(long id);
+
+    List<T>  getByListOfId(List<Long> idList);
 
     List<T> getAll();
 

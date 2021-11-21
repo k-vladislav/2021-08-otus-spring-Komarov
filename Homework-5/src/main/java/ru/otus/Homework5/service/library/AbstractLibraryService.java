@@ -40,8 +40,14 @@ public abstract class AbstractLibraryService<T> implements LibraryService<T> {
     }
 
     @Override
+    @Deprecated
     public Optional<T> getById(long id) {
         return dao.getById(id);
+    }
+
+    @Override
+    public List<T> getByListOfId(List<Long> idList) {
+        return dao.getByListOfId(idList);
     }
 
     @Override

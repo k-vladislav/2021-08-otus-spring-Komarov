@@ -30,10 +30,21 @@ public interface LibraryDao<T> {
     int count();
 
     /**
+     * @deprecated Use getByListOfId(List id) instead
      * @param id id of row
      * @return Optional of T object
      */
+    @Deprecated
     Optional<T> getById(long id);
+
+
+    /**
+     * Batch get List of entities
+     *
+     * @param idList list of Ids
+     * @return Optional List of entities
+     */
+    List<T>  getByListOfId(List<Long> idList);
 
     /**
      * @return list of T objects

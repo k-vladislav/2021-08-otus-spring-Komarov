@@ -4,6 +4,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -56,6 +57,12 @@ public class BookDao implements LibraryDao<Book> {
     public Optional<Book> getById(long id) {
         Book book = jdbc.queryForObject("select title from Book where id = :id", Map.of("id", id), new BookMapper());
         return Optional.ofNullable(book);
+    }
+
+    @Override
+    public List<Book> getByListOfId(List<Long> idList) {
+        SqlParameterSource parameterSource = new MapSqlParameterSource("idList", idList);
+        return jdbc.query("select title from Book where id in (:idList)", parameterSource, new BookMapper());
     }
 
     @Override

@@ -4,6 +4,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -54,6 +55,12 @@ public class AuthorDao implements LibraryDao<Author> {
     }
 
     @Override
+    public List<Author> getByListOfId(List<Long> idList) {
+        SqlParameterSource parameterSource = new MapSqlParameterSource("idList", idList);
+        return jdbc.query("select last_name from Author where id in (:idList)", parameterSource, new AuthorMapper());
+    }
+
+    @Override
     public List<Author> getAll() {
         return jdbc.query("select last_name from Author", new AuthorMapper());
     }
@@ -68,7 +75,7 @@ public class AuthorDao implements LibraryDao<Author> {
         try {
             Long id = jdbc.queryForObject("select id from Author where last_name = :lastName", Map.of("lastName", lastName), Long.class);
             return Optional.ofNullable(id);
-        }catch (EmptyResultDataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
