@@ -12,7 +12,7 @@ public class Book {         //todo cascade = ?
     private Long id;
 
     @Column(name = "title", nullable = false, unique = true)
-    private String title;
+    private  String title;
 
     //todo batchsize or fetch?
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -30,4 +30,18 @@ public class Book {         //todo cascade = ?
     @JoinColumn(name = "book_id")
     private List<BookComment> comments;
 
+    public Book(String title) {
+        this.title = title;
+    }
+
+    public Book() {
+    }
+
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "title='" + title + '\'' +
+                '}';
+    }
 }
