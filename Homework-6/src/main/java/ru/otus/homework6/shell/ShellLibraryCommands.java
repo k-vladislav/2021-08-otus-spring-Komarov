@@ -6,7 +6,7 @@ public interface ShellLibraryCommands {
 
     void showBook(String title);
 
-    void updateBook(String oldTitle, String newTitle);
+    void updateBookTitle(String oldTitle, String newTitle);
 
     void deleteBook(String title);
 
@@ -15,7 +15,7 @@ public interface ShellLibraryCommands {
 
     void showBooksOfAuthor(String lastname);
 
-    void updateAuthor(String oldLastName, String newLastName);
+    void updateAuthorLastName(String oldLastName, String newLastName);
 
     void deleteAuthorForBook(String title, String lastName);
 
@@ -26,7 +26,7 @@ public interface ShellLibraryCommands {
 
     void showBooksOfGenre(String genre);
 
-    void updateGenre(String oldGenre, String newGenre);
+    void updateGenreName(String oldGenre, String newGenre);
 
     void deleteGenreForBook(String title, String genre);
 

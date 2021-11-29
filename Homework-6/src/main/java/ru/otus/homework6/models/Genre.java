@@ -1,7 +1,14 @@
 package ru.otus.homework6.models;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+/*@Setter
+@Getter
+@NoArgsConstructor*/
 @Entity
 @Table(name = "Genre")
 public class Genre {
@@ -11,4 +18,16 @@ public class Genre {
 
     @Column(name = "genre", nullable = false, unique = true)
     private String genre;
+
+    public Genre(String genre) {
+        this.genre = genre;
+    }
+
+    public Genre() {
+    }
+
+    @Override
+    public String toString() {
+        return genre;
+    }
 }

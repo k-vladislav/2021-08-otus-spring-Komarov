@@ -1,9 +1,16 @@
 package ru.otus.homework6.models;
 
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.List;
 
+@Setter
+@Getter
+@NoArgsConstructor
 @Entity
 @Table(name = "BOOK")
 public class Book {         //todo cascade = ?
@@ -12,36 +19,36 @@ public class Book {         //todo cascade = ?
     private Long id;
 
     @Column(name = "title", nullable = false, unique = true)
-    private  String title;
+    private String title;
 
     //todo batchsize or fetch?
+
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "Book_Author", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
     private List<Author> authors;
 
     //todo batchsize or fetch?
+
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "Book_Genre", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private List<Genre> genres;
 
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id")
+    @JoinColumn(name = "book_id", referencedColumnName = "id")
     private List<BookComment> comments;
 
     public Book(String title) {
         this.title = title;
     }
 
-    public Book() {
-    }
-
 
     @Override
     public String toString() {
-        return "Book{" +
-                "title='" + title + '\'' +
-                '}';
+        StringBuilder str = new StringBuilder("Title: ");
+        str.append(title);
+        return str.toString();
     }
 }

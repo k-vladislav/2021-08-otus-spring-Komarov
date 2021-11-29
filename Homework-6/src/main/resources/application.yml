@@ -8,5 +8,5 @@ spring:
     generate-ddl: false
     hibernate:
       ddl-auto: none
-    show-sql: true
-debug: on
+    show-sql: false
+debug: off
