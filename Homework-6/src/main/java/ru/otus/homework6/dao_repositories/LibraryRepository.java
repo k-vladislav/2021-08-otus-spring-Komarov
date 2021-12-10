@@ -39,4 +39,13 @@ public interface LibraryRepository<T> {
     void delete(T entity);
 
 
+    /**
+     * To check result of persist, delete (and merge?)
+     *
+     * @param entity
+     * @return true if entity is in persistence context
+     */
+    boolean contains(T entity);
+
+
 }

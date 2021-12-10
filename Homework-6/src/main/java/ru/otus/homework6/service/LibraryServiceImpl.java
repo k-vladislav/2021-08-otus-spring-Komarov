@@ -19,6 +19,42 @@ public class LibraryServiceImpl implements LibraryService {
 
 
     @Override
+    public boolean persistBook(String title) {
+        bookRep.insert(new Book(title));
+        return true; //todo wtf?
+    }
+
+    @Override
+    public void updateBookTitle(String oldTitle, String newTitle) {
+        Optional<Book> bookOpt = bookRep.findByValue(oldTitle);
+        bookOpt.ifPresentOrElse(book -> {
+            book.setTitle(newTitle);
+            Book mergedBook = bookRep.mergeUpdate(book);
+            System.out.println("Book: title updated from " + book.getTitle() + " to " + mergedBook.getTitle());
+        }, () -> System.out.println("Book not found: " + oldTitle));
+    }
+
+    @Override
+    public Optional<Book> showBook(String title) {
+        Optional<Book> bookOpt = bookRep.findByValue(title);
+        bookOpt.ifPresentOrElse(book -> {
+                    System.out.println(book);
+                    System.out.println("Authors: ");
+                    book.getAuthors().forEach(System.out::println);
+                    System.out.println("Genres: ");
+                    book.getGenres().forEach(System.out::println);
+                },
+                () -> System.out.println("Book not found: " + title)); //todo entity graph?
+        return Optional.empty(); //todo return?
+    }
+
+    @Override
+    public boolean deleteBook(String title) {
+        bookRep.findByValue(title).ifPresentOrElse(bookRep::delete, () -> System.out.println("Book not found: " + title));
+        return true; //todo wtf?
+    }
+
+    @Override
     public long addAuthorForBook(String title, String lastName) { //todo return?
         Optional<Book> bookOpt = bookRep.findByValue(title);
         bookOpt.ifPresentOrElse(book -> {
@@ -47,7 +83,7 @@ public class LibraryServiceImpl implements LibraryService {
         Optional<Book> bookOpt = bookRep.findByValue(title);
         bookOpt.ifPresentOrElse(book -> {
                     List<Author> authors = book.getAuthors();
-                    authors.stream().filter(author -> lastName.equalsIgnoreCase(author.getLastName())).forEach(author -> authors.remove(author));
+                    authors.stream().filter(author -> lastName.equalsIgnoreCase(author.getLastName())).forEach(authors::remove);
                     book.setAuthors(authors);
                     bookRep.mergeUpdate(book);
                     System.out.println("Book " + title + ": author added: " + lastName);
@@ -59,43 +95,6 @@ public class LibraryServiceImpl implements LibraryService {
     @Override
     public int deleteAuthorTotally(String lastName) {
         return 0; //todo authorrep
-    }
-
-    @Override
-    public long addBook(String title) {
-        bookRep.insert(new Book(title));
-        return 0; //todo return?
-    }
-
-    @Override
-    public Optional<Book> showBook(String title) {
-        Optional<Book> bookOpt = bookRep.findByValue(title);
-        bookOpt.ifPresentOrElse(book -> {
-                    System.out.println(book);
-                    System.out.println("Authors: ");
-                    book.getAuthors().forEach(System.out::println);
-                    System.out.println("Genres: ");
-                    book.getGenres().forEach(System.out::println);
-                },
-                () -> System.out.println("Book not found: " + title)); //todo entity graph?
-        return Optional.empty(); //todo return?
-    }
-
-    @Override
-    public int updateBookTitle(String oldTitle, String newTitle) {
-        Optional<Book> bookOpt = bookRep.findByValue(oldTitle);
-        bookOpt.ifPresentOrElse(book -> {
-            book.setTitle(newTitle);
-            bookRep.mergeUpdate(book);
-            System.out.println("Book: title updated from " + oldTitle + " to " + newTitle);
-        }, () -> System.out.println("Book not found: " + oldTitle));
-        return 0; //todo return?
-    }
-
-    @Override
-    public int deleteBook(String title) {
-        bookRep.findByValue(title).ifPresentOrElse(bookRep::delete, () -> System.out.println("Book not found: " + title));
-        return 0; //todo return?
     }
 
     @Override

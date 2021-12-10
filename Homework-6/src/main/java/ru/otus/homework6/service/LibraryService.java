@@ -1,6 +1,6 @@
 package ru.otus.homework6.service;
 
-public interface LibraryService extends BookCommands, AuthorCommands, GenreCommands {
+public interface LibraryService extends BookService, AuthorCommands, GenreCommands {
 
 /*    void create(String value);
 

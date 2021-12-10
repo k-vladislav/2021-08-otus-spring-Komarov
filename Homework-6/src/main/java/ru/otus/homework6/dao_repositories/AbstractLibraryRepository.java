@@ -26,4 +26,9 @@ public abstract class AbstractLibraryRepository<T> implements LibraryRepository<
         em.remove(entity);
     }
 
+    @Override
+    public boolean contains(T entity) {
+        return em.contains(entity);
+    }
+
 }

@@ -22,12 +22,14 @@ public class Book {         //todo cascade = ?
     private String title;
 
     //todo batchsize or fetch?
+    public Book(String title) {
+        this.title = title;
+    }
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "Book_Author", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
     private List<Author> authors;
-
     //todo batchsize or fetch?
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -40,15 +42,9 @@ public class Book {         //todo cascade = ?
     @JoinColumn(name = "book_id", referencedColumnName = "id")
     private List<BookComment> comments;
 
-    public Book(String title) {
-        this.title = title;
-    }
-
 
     @Override
     public String toString() {
-        StringBuilder str = new StringBuilder("Title: ");
-        str.append(title);
-        return str.toString();
+        return "Title: " + title;
     }
 }

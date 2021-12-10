@@ -9,6 +9,7 @@ public class Homework6Application {
 
     public static void main(String[] args) {
         ApplicationContext run = SpringApplication.run(Homework6Application.class, args);
+//todo when use em.flush()?
 
 
     }

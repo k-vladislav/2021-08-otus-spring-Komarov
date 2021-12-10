@@ -2,40 +2,43 @@ package ru.otus.homework6.shell;
 
 
 import org.springframework.shell.standard.ShellComponent;
+import ru.otus.homework6.models.Book;
 import ru.otus.homework6.service.LibraryService;
 
 @ShellComponent(value = "Library commands")
 public class ShellLibraryCommandsImpl implements ShellLibraryCommands {
 
-    private final LibraryService books;
+    private Book book;
 
-    public ShellLibraryCommandsImpl(LibraryService books) {
-        this.books = books;
+    private final LibraryService lib;
+
+    public ShellLibraryCommandsImpl(LibraryService lib) {
+        this.lib = lib;
     }
 
     @Override
     public void addBook(String title) {
-        books.create(title);
+        lib.create(title);
     }
 
     @Override
     public void showBook(String title) {
-        books.read(title);
+        lib.read(title);
     }
 
     @Override
     public void updateBookTitle(String oldTitle, String newTitle) {
-        books.updateTitle(oldTitle, newTitle);
+        lib.updateTitle(oldTitle, newTitle);
     }
 
     @Override
     public void deleteBook(String title) {
-        books.delete(title);
+        lib.delete(title);
     }
 
     @Override
     public void addAuthorForBook(String title, String lastName) {
-        books.
+        lib.
     }
 
     @Override
