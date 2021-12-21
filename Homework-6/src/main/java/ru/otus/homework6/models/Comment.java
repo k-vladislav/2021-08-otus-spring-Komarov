@@ -6,16 +6,19 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-/*@Setter
+@Setter
 @Getter
-@NoArgsConstructor*/
+@NoArgsConstructor
 @Entity
-public class BookComment { //todo не может сущ-ть без Book
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "comment", nullable = false, unique = false)
     private String comment;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Book book;
 
 }

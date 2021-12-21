@@ -5,10 +5,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Setter
 @Getter
-//@NoArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "Author")
 public class Author {
@@ -23,9 +24,9 @@ public class Author {
         this.lastName = lastName;
     }
 
-    public Author() {
+    @ManyToMany(mappedBy = "authors")
+    private Set<Book> books;
 
-    }
 
     @Override
     public String toString() {
