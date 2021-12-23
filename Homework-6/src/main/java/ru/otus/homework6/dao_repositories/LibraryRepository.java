@@ -1,34 +1,31 @@
 package ru.otus.homework6.dao_repositories;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface LibraryRepository<T> {
 
-
     /**
-     * EntityManager.persist (CREATE)
+     * Persists or merges
      *
      * @param entity entity
      */
-    void insert(T entity);
+    void save(T entity);
 
     /**
      * READ
      *
-     * @param fieldValue String value of field (e.g. title)
+     * @param value String value of field (e.g. title)
      * @return List of entities (e.g. books)
      */
-    Optional<T> findByValue(String fieldValue);
-
+    Optional<T> findByName(String value);
 
     /**
-     * UPDATE
+     * Load entity (book) with all attributes (Named Entity Graph)
      *
-     * @param entity new entity
-     * @return number of rows affected //todo
+     * @param value Book title
+     * @return optional of entity (Book)
      */
-    T mergeUpdate(T entity);
+    Optional<T> findByNameWithAttributes(String value);
 
 
     /**
@@ -37,15 +34,6 @@ public interface LibraryRepository<T> {
      * @param entity entity
      */
     void delete(T entity);
-
-
-    /**
-     * To check result of persist, delete (and merge?)
-     *
-     * @param entity
-     * @return true if entity is in persistence context
-     */
-    boolean contains(T entity);
 
 
 }

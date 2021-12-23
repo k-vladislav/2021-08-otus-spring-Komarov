@@ -14,26 +14,46 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "BOOK")
-public class Book { //todo batchsize or fetch?
+@NamedEntityGraph(name = "book-all-attributes-graph", includeAllAttributes = true)
+public class Book {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "title", nullable = false, unique = true)
+    @Column(name = "title", nullable = false, unique = true) //todo В аннотации @Column опция unique = true не работает, потому что переопределена созданием схемы в schema.sql, и jpa.generate.ddl=false?
     private String title;
 
     public Book(String title) {
         this.title = title;
     }
 
+    /*
+     todo
+        Для связи Книги-Авторы используется @ManyToMany с таблицей связей.
+        Главной сущностью выбрал Книгу (в нее добавляю автора или удаляю автора).
+        Каскадные операции выбраны CascadeType.PERSIST, CascadeType.MERGE.
+        Тип коллекций Авторов в Книге и Книг в Авторе - Set
+        В создании таблиц в data.sql указал UNIQUE, чтобы Авторы были уникальные и Книги тоже
+        Действия:
+        1. Добавляю книгу КНИГА_1 - ОК
+        2. Добавляю к книге КНИГА_1 автора АВТОР_1 - ОК
+        3. Добавляю к книге КНИГА_1 автора АВТОР_2 - ОК
+        4. Добавляю к книге КНИГА_1 автора АВТОР_1 - ожидаемая ошибка про "unique constrain violation", но хочется, чтобы либо ничего не делалось, либо просто обновилась таблица связей
+        5. Добавляю книгу КНИГА_2 - ОК
+        6. Добавляю к книге КНИГА_2 автора АВТОР_1 - ошибка "unique constrain violation", потому что гибернейт пытается вставить АВТОР_1 в таблицу Авторы, а такой Автор там уже есть.
+            Как сделать, чтобы только добавилась связь КНИГА_2-АВТОР_1 в таблице связей, без добавления в таблицу уже такого автора?
+     */
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(name = "Book_Author", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "author_id"))
-    private Set<Author> authors; // = new HashSet();?
+    private Set<Author> authors;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY) //todo Нужно ли в аннотации @ManyToMany,@OneToMany добавлять targetEntity= ..class?
     @JoinTable(name = "Book_Genre", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "genre_id"))
-    private Set<Genre> genres; // = new HashSet();?
+    private Set<Genre> genres;
 
+    //todo Для того, чтобы сущность Комментарии не существовала без главной сущности Книга, достаточно ли опции orphanRemoval = true?
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
@@ -70,6 +90,6 @@ public class Book { //todo batchsize or fetch?
 
     @Override
     public String toString() {
-        return "Title: " + title;
+        return title;
     }
 }

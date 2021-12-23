@@ -10,15 +10,20 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
+@Table(name = "BOOK_COMMENT")
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "comment", nullable = false, unique = false)
+    @Column(name = "comment", nullable = false)
     private String comment;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Book book;
 
+    @Override
+    public String toString() {
+        return comment;
+    }
 }

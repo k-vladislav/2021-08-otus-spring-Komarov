@@ -1,17 +1,14 @@
 package ru.otus.homework6.service;
 
-
-import ru.otus.homework6.models.Book;
-
 import java.util.Optional;
 
-public interface BookService {
-    //Book
-    boolean persistBook(String title);
+public interface BookService<T> {
 
-    Optional<Book> showBook(String title);
+    void save(String value);
 
-    void updateBookTitle(String oldTitle, String newTitle);
+    Optional<T> getBookFullInfo(String value);
 
-    boolean deleteBook(String title);
+    void updateValue(String oldValue, String newValue);
+
+    void delete(String value);
 }

@@ -11,7 +11,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "Author")
+@Table(name = "Author") //todo Как побороть ошибку Intellij Idea (Ultimate), что "Cannot resolve table/column X"? При этом Data Source выбран и указан (H2), а код (добавить-удалить книгу и т.д.) работает
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +25,7 @@ public class Author {
     }
 
     @ManyToMany(mappedBy = "authors")
+    //todo В @ManyToMany отношениях, таблица связей @JoinTable указывается только у owning side (Book) или и у дочерней (Author, Genre) тоже?
     private Set<Book> books;
 
 
