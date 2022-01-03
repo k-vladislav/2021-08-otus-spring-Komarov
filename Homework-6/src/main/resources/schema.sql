@@ -3,7 +3,7 @@ CREATE TABLE BOOK
 (
     ID    BIGINT PRIMARY KEY auto_increment,
     TITLE VARCHAR(255)
-        UNIQUE
+       -- UNIQUE
 );
 
 DROP TABLE IF EXISTS AUTHOR;
@@ -11,7 +11,7 @@ CREATE TABLE AUTHOR
 (
     ID        BIGINT PRIMARY KEY auto_increment,
     LAST_NAME VARCHAR(255)
-        UNIQUE
+      --  UNIQUE
 );
 
 DROP TABLE IF EXISTS GENRE;
@@ -19,7 +19,7 @@ CREATE TABLE GENRE
 (
     ID    BIGINT PRIMARY KEY auto_increment,
     GENRE VARCHAR(255)
-        UNIQUE
+      --  UNIQUE
 );
 
 DROP TABLE IF EXISTS BOOK_AUTHOR;

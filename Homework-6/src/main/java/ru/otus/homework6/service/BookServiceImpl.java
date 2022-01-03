@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homework6.dao_repositories.LibraryRepository;
 import ru.otus.homework6.models.Book;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,8 +27,8 @@ public class BookServiceImpl implements BookService<Book> {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Book> getBookFullInfo(String title) {
-        return booksRepository.findByNameWithAttributes(title);
+    public Optional<Book> getBookWithComments(String title) {
+        return booksRepository.findByNameWithComments(title);
     }
 
     @Override
@@ -45,6 +46,12 @@ public class BookServiceImpl implements BookService<Book> {
     public void delete(String value) {
         Optional<Book> optionalBook = booksRepository.findByName(value);
         optionalBook.ifPresentOrElse(booksRepository::delete, () -> System.out.println("Such book not found"));
+    }
+
+    @Override
+    @Transactional
+    public List<Book> getAllBooks() {
+        return booksRepository.getAll();
     }
 
 }

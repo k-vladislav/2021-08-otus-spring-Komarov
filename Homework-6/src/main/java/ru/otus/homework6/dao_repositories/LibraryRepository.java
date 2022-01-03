@@ -1,8 +1,15 @@
 package ru.otus.homework6.dao_repositories;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface LibraryRepository<T> {
+
+    /**
+     * @return set of all T (books)
+     */
+    List<T> getAll();
 
     /**
      * Persists or merges
@@ -25,7 +32,7 @@ public interface LibraryRepository<T> {
      * @param value Book title
      * @return optional of entity (Book)
      */
-    Optional<T> findByNameWithAttributes(String value);
+    Optional<T> findByNameWithComments(String value);
 
 
     /**

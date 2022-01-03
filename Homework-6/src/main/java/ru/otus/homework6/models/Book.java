@@ -15,13 +15,14 @@ import java.util.Set;
 @Entity
 @Table(name = "BOOK")
 @NamedEntityGraph(name = "book-all-attributes-graph", includeAllAttributes = true)
+@NamedEntityGraph(name = "book-with-comments", attributeNodes = @NamedAttributeNode("comments"))
 public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "title", nullable = false, unique = true) //todo В аннотации @Column опция unique = true не работает, потому что переопределена созданием схемы в schema.sql, и jpa.generate.ddl=false?
+    @Column(name = "title", nullable = false, unique = true)
     private String title;
 
     public Book(String title) {
@@ -45,21 +46,24 @@ public class Book {
             Как сделать, чтобы только добавилась связь КНИГА_2-АВТОР_1 в таблице связей, без добавления в таблицу уже такого автора?
      */
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(name = "Book_Author", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "author_id"))
     private Set<Author> authors;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY) //todo Нужно ли в аннотации @ManyToMany,@OneToMany добавлять targetEntity= ..class?
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(name = "Book_Genre", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private Set<Genre> genres;
 
-    //todo Для того, чтобы сущность Комментарии не существовала без главной сущности Книга, достаточно ли опции orphanRemoval = true?
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
     public void addAuthor(Author author) {
         this.authors.add(author);
-        author.getBooks().add(this);
+        if (author.getBooks() == null) {
+            author.setBooks(Set.of(this));
+        } else {
+            author.getBooks().add(this);
+        }
     }
 
     public void removeAuthor(Author author) {

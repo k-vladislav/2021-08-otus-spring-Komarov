@@ -32,9 +32,10 @@ public class AuthorServiceImpl implements AuthorService {
     @Transactional
     public boolean addAuthorForBook(String title, String lastName) {
         Optional<Boolean> aBoolean = booksRepository.findByName(title).map(book -> {
-            Set<Author> authors = book.getAuthors();
+            book.addAuthor(new Author(lastName));
+/*            Set<Author> authors = book.getAuthors();
             authors.add(new Author(lastName));
-            book.setAuthors(authors);
+            book.setAuthors(authors);*/
             booksRepository.save(book);
             return true;
         });
