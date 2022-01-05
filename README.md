@@ -9,3 +9,4 @@
 4) Homework-4 - приложение тестирования с самим тестированием на Spring Boot с Shell
 5) Homework-5 - Spring JDBC (приложение хранящее информацию о книгах в библиотеке)
 6) Homework-6 - приложение хранящее информацию о книгах в библиотеке на Spring ORM+JPA+Hibernate
+7) Homework-7 - приложение-библиотека на Spring Data JPA
