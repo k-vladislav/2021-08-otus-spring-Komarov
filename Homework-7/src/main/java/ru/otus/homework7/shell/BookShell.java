@@ -20,6 +20,7 @@ public interface BookShell {
 
     void deleteAuthorForBook(String title, String lastName);
 
+
     void addCommentForBook(String title, String comment);
 
 /*

@@ -5,5 +5,5 @@ public interface AuthorService {
 
     boolean addAuthorForBook(String title, String lastName);
 
-    boolean deleteAuthorForBook(String title, String lastName);
+    boolean deleteAuthorFromBook(String title, String lastName);
 }

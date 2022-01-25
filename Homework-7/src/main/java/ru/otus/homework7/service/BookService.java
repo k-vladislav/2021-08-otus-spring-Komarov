@@ -1,17 +1,23 @@
 package ru.otus.homework7.service;
 
+import ru.otus.homework7.models.Book;
+
 import java.util.List;
 import java.util.Optional;
 
-public interface BookService<T> {
+public interface BookService {
+
+    Optional<Book> findBookById(long id);
+
+    Optional<Book> findBookByTitle(String title);
 
     void save(String value);
 
-    Optional<T> getBookWithComments(String value);
+    Optional<Book> getBookWithComments(String value);
 
-    void updateValue(String oldValue, String newValue);
+    boolean updateTitle(String oldValue, String newValue);
 
-    void delete(String value);
+    boolean delete(String value);
 
-    List<T> getAllBooks();
+    List<Book> getAllBooks();
 }
