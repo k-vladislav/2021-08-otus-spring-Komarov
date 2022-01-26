@@ -14,7 +14,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "BOOK")
-@NamedEntityGraph(name = "book-all-attributes-graph", includeAllAttributes = true)
 @NamedEntityGraph(name = "book-with-comments", attributeNodes = @NamedAttributeNode("comments"))
 public class Book {
 
@@ -56,7 +55,11 @@ public class Book {
 
     public void addGenre(Genre genre) {
         this.genres.add(genre);
-        genre.getBooks().add(this);
+        if (genre.getBooks() == null) {
+            genre.setBooks(Set.of(this));
+        } else {
+            genre.getBooks().add(this);
+        }
     }
 
     public void removeGenre(Genre genre) {

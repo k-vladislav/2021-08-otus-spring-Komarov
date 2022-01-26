@@ -33,7 +33,7 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public void save(String title) {
         Book book = new Book(title);
-        Book save = booksRepository.save(book);
+        booksRepository.save(book);
     }
 
     @Override
@@ -47,12 +47,6 @@ public class BookServiceImpl implements BookService {
     public boolean updateTitle(String oldValue, String newValue) {
         int i = booksRepository.updateBookByTitle(oldValue, newValue);
         return i > 0;
-
-        /*Optional<Book> optionalBook = booksRepository.findByName(oldValue);
-        optionalBook.ifPresentOrElse(book -> {
-            book.setTitle(newValue);
-            booksRepository.save(book);
-        }, () -> System.out.println("Such book not found"));*/
     }
 
     @Override

@@ -37,7 +37,6 @@ public class BookShellImpl implements BookShell {
     @ShellMethod(key = "ab", value = "Add a book by title", group = "book")
     public void addBook(@ShellOption String title) {
         bookService.save(title);
-        //todo print result
     }
 
     @Override
