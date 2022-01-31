@@ -14,7 +14,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "BOOK")
-@NamedEntityGraph(name = "book-with-comments", attributeNodes = @NamedAttributeNode("comments"))
 public class Book {
 
     @Id
@@ -36,7 +35,7 @@ public class Book {
     @JoinTable(name = "Book_Genre", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private Set<Genre> genres;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Comment> comments;
 
     public void addAuthor(Author author) {
@@ -80,6 +79,6 @@ public class Book {
 
     @Override
     public String toString() {
-        return title;
+        return "id = " + id + ": " + title;
     }
 }

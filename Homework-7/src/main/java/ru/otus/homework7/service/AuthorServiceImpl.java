@@ -8,8 +8,6 @@ import ru.otus.homework7.models.Book;
 
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -23,8 +21,8 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     @Transactional
-    public boolean addAuthorForBook(String title, String lastName) {
-        Optional<Boolean> aBoolean = bookRepository.findBookByTitle(title).map(book -> {
+    public boolean addAuthorForBook(long bookId, String lastName) {
+        Optional<Boolean> aBoolean = bookRepository.findById(bookId).map(book -> {
             book.addAuthor(new Author(lastName));
             bookRepository.save(book);
             return true;
@@ -34,16 +32,16 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     @Transactional
-    public boolean deleteAuthorFromBook(String title, String lastName) {
+    public boolean deleteAuthorFromBook(long bookId, long authorId) {
         boolean result = false;
 
-        Optional<Book> bookByTitle = bookRepository.findBookByTitle(title);
+        Optional<Book> bookByTitle = bookRepository.findById(bookId);
         if (bookByTitle.isPresent()) {
             Book book = bookByTitle.get();
             Set<Author> authors = book.getAuthors();
 
             Optional<Author> authorToDelete = authors.stream()
-                    .filter(author -> lastName.equalsIgnoreCase(author.getLastName()))
+                    .filter(author -> authorId == author.getId())
                     .findFirst();
 
             if (authorToDelete.isPresent()) {
@@ -54,23 +52,5 @@ public class AuthorServiceImpl implements AuthorService {
         }
 
         return result;
-
-/*        Optional<Boolean> aBoolean = bookRepository.findBookByTitle(title).map(book -> {
-            Set<Author> authors = book.getAuthors();
-            Optional<Author> authorForDeleting = book.getAuthors().stream()
-                    .filter(author -> lastName.equalsIgnoreCase(author.getLastName()))
-                    .findFirst();
-
-            authorForDeleting
-
-
-            Set<Author> cleanAuthors = authors.stream()
-                    .filter(author -> !lastName.equalsIgnoreCase(author.getLastName()))
-                    .collect(Collectors.toSet());
-            book.setAuthors(cleanAuthors);
-            bookRepository.save(book);
-            return true;
-        });
-        return aBoolean.orElse(false);*/
     }
 }

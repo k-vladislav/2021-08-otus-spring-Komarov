@@ -29,6 +29,6 @@ public class Genre {
 
     @Override
     public String toString() {
-        return genre;
+        return "id = " + id + ": " + genre;
     }
 }

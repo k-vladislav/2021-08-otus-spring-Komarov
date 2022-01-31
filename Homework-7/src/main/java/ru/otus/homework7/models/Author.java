@@ -30,6 +30,6 @@ public class Author {
 
     @Override
     public String toString() {
-        return lastName;
+        return "id = " + id + ": " + lastName;
     }
 }

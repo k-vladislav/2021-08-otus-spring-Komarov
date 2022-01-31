@@ -2,30 +2,22 @@ package ru.otus.homework7.shell;
 
 public interface BookShell {
 
-    /**
-     * get all books with authors and genres (eager), but not Comments (lazy)
-     */
-    void getAllBooks();
-
     void addBook(String title);
 
-    void showBook(String title);
+    void showBook(long id);
 
-    void updateBookTitle(String oldTitle, String newTitle);
+    void getAllBooks();
 
-    void deleteBook(String title);
+    void updateBookTitle(long bookId, String newTitle);
 
-
-    void addAuthorForBook(String title, String lastName);
-
-    void deleteAuthorForBook(String title, String lastName);
+    void deleteBook(long bookId);
 
 
-    void addCommentForBook(String title, String comment);
+    void addAuthorForBook(long bookId, String lastName);
 
-/*
-    void addGenreForBook(String title, String genre);
+    void deleteAuthorForBook(long bookId, long authorId);
 
-    void deleteGenreForBook(String title, String genre);
-*/
+
+    void addCommentForBook(long bookId, String comment);
+
 }

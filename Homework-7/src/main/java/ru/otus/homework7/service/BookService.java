@@ -7,17 +7,13 @@ import java.util.Optional;
 
 public interface BookService {
 
-    Optional<Book> findBookById(long id);
-
-    Optional<Book> findBookByTitle(String title);
-
     void save(String value);
 
-    Optional<Book> getBookWithComments(String value);
+    Optional<Book> findById(long bookId);
 
-    boolean updateTitle(String oldValue, String newValue);
+    boolean updateTitle(long bookId, String newValue);
 
-    boolean delete(String value);
+    boolean delete(long bookId);
 
     List<Book> getAllBooks();
 }

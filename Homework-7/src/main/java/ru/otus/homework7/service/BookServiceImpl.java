@@ -18,18 +18,6 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public Optional<Book> findBookById(long id) {
-        return booksRepository.findBookById(id);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Optional<Book> findBookByTitle(String title) {
-        return booksRepository.findBookByTitle(title);
-    }
-
-    @Override
     @Transactional
     public void save(String title) {
         Book book = new Book(title);
@@ -37,23 +25,29 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public Optional<Book> getBookWithComments(String title) {
-        return booksRepository.findBookWithCommentsByTitle(title);
+    public Optional<Book> findById(long bookId) {
+        return booksRepository.findById(bookId);
     }
 
     @Override
     @Transactional
-    public boolean updateTitle(String oldValue, String newValue) {
-        int i = booksRepository.updateBookByTitle(oldValue, newValue);
-        return i > 0;
+    public boolean updateTitle(long bookId, String newTitle) {
+        Optional<Boolean> result = booksRepository.findById(bookId).map(book -> {
+            book.setTitle(newTitle);
+            Book savedBook = booksRepository.save(book);
+            return newTitle.equals(savedBook.getTitle());
+        });
+        return result.orElse(false);
     }
 
     @Override
     @Transactional
-    public boolean delete(String title) {
-        int i = booksRepository.deleteByTitle(title);
-        return i>0;
+    public boolean delete(long bookId) {
+        if (booksRepository.existsById(bookId)) {
+            booksRepository.deleteById(bookId);
+            return true;
+        }
+        return false;
     }
 
     @Override

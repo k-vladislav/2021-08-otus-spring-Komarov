@@ -19,24 +19,17 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public boolean addCommentForBook(String title, String comment) {
+    public boolean addCommentForBook(long bookId, String comment) {
         boolean result = false;
-        Optional<Book> bookWithCommentsByTitle = booksRepository.findBookWithCommentsByTitle(title);
+        Optional<Book> optionalBook = booksRepository.findById(bookId);
 
-        if (bookWithCommentsByTitle.isPresent()) {
-            Book book = bookWithCommentsByTitle.get();
+        if (optionalBook.isPresent()) {
+            Book book = optionalBook.get();
             book.addComment(new Comment(comment));
             booksRepository.save(book);
             result = true;
         }
 
         return result;
-
-/*        Optional<Boolean> aBoolean = booksRepository.findByNameWithComments(title).map(book -> {
-            book.addComment(new Comment(comment));
-            booksRepository.save(book);
-            return true;
-        });
-        return aBoolean.orElse(false);*/
     }
 }

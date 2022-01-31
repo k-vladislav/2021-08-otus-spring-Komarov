@@ -23,11 +23,11 @@ public class Comment {
     @Column(name = "comment", nullable = false)
     private String comment;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Book book;
 
     @Override
     public String toString() {
-        return comment;
+        return "id = " + id + ": " + comment;
     }
 }

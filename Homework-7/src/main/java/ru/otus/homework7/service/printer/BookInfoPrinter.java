@@ -1,6 +1,9 @@
 package ru.otus.homework7.service.printer;
 
 import ru.otus.homework7.models.Book;
+import ru.otus.homework7.models.Comment;
+
+import java.util.List;
 
 public class BookInfoPrinter {
 
@@ -17,12 +20,9 @@ public class BookInfoPrinter {
         book.getAuthors().forEach(author -> System.out.println("    " + author));
         System.out.println("Genres:");
         book.getGenres().forEach(genre -> System.out.println("    " + genre));
-
-    }
-
-    public static void printWithComments(Book book) {
-        print(book);
         System.out.println("Comments:");
-        book.getComments().forEach(comment -> System.out.println("  " + comment));
+        List<Comment> comments = book.getComments();
+        comments.forEach(comment -> System.out.println("  " + comment));
+
     }
 }
