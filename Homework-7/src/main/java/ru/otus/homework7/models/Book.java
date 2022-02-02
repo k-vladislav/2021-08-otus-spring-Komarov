@@ -8,6 +8,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Setter
 @Getter
@@ -35,11 +37,15 @@ public class Book {
     @JoinTable(name = "Book_Genre", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private Set<Genre> genres;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Comment> comments;
 
     public void addAuthor(Author author) {
-        this.authors.add(author);
+        if (this.authors == null) {
+            this.authors = Stream.of(author).collect(Collectors.toSet());
+        } else {
+            this.authors.add(author);
+        }
         if (author.getBooks() == null) {
             author.setBooks(Set.of(this));
         } else {
@@ -67,7 +73,11 @@ public class Book {
     }
 
     public void addComment(Comment comment) {
-        this.comments.add(comment);
+        if (this.comments == null) {
+            this.comments = Stream.of(comment).collect(Collectors.toList());
+        } else {
+            this.comments.add(comment);
+        }
         comment.setBook(this);
     }
 

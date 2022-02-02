@@ -22,35 +22,36 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     @Transactional
     public boolean addAuthorForBook(long bookId, String lastName) {
-        Optional<Boolean> aBoolean = bookRepository.findById(bookId).map(book -> {
+        boolean isAuthorAdded = false;
+        Optional<Book> optionalBook = bookRepository.findById(bookId);
+        if (optionalBook.isPresent()) {
+            Book book = optionalBook.get();
             book.addAuthor(new Author(lastName));
             bookRepository.save(book);
-            return true;
-        });
-        return aBoolean.orElse(false);
+            isAuthorAdded = true;
+        }
+        return isAuthorAdded;
     }
 
     @Override
     @Transactional
     public boolean deleteAuthorFromBook(long bookId, long authorId) {
-        boolean result = false;
-
-        Optional<Book> bookByTitle = bookRepository.findById(bookId);
-        if (bookByTitle.isPresent()) {
-            Book book = bookByTitle.get();
+        boolean isAuthorDeleted = false;
+        Optional<Book> optionalBook = bookRepository.findById(bookId);
+        if (optionalBook.isPresent()) {
+            Book book = optionalBook.get();
             Set<Author> authors = book.getAuthors();
 
-            Optional<Author> authorToDelete = authors.stream()
+            Optional<Author> optionalAuthor = authors.stream()
                     .filter(author -> authorId == author.getId())
                     .findFirst();
 
-            if (authorToDelete.isPresent()) {
-                book.removeAuthor(authorToDelete.get());
+            if (optionalAuthor.isPresent()) {
+                book.removeAuthor(optionalAuthor.get());
                 bookRepository.save(book);
-                result = true;
+                isAuthorDeleted = true;
             }
         }
-
-        return result;
+        return isAuthorDeleted;
     }
 }

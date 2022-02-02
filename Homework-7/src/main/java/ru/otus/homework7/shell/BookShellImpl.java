@@ -33,7 +33,7 @@ public class BookShellImpl implements BookShell {
     }
 
     @Override
-    @ShellMethod(key = "sb", value = "Show book (incl. comments) by id", group = "book")
+    @ShellMethod(key = "sb", value = "Show book (excl. comments) by id", group = "book")
     public void showBook(@ShellOption long bookId) {
         Optional<Book> optionalBook = bookService.findById(bookId);
         optionalBook.ifPresentOrElse(BookInfoPrinter::print,
@@ -85,6 +85,13 @@ public class BookShellImpl implements BookShell {
         boolean b = commentService.addCommentForBook(bookId, comment);
         if (b) System.out.println("Comment added");
         else System.out.println("Comment not added");
+    }
+
+    @Override
+    @ShellMethod(key = "scb", value = "Show comments for book", group = "comment")
+    public void showCommentsForBook(@ShellOption long bookId) {
+        commentService.getCommentsForBook(bookId).forEach(System.out::println);
+
     }
 
 }

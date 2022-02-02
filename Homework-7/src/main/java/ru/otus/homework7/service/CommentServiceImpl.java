@@ -6,6 +6,8 @@ import ru.otus.homework7.dao_repositories.BookRepository;
 import ru.otus.homework7.models.Book;
 import ru.otus.homework7.models.Comment;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,5 +33,17 @@ public class CommentServiceImpl implements CommentService {
         }
 
         return result;
+    }
+
+    @Override
+    @Transactional
+    public List<Comment> getCommentsForBook(long bookId) {
+        List<Comment> comments = new ArrayList<>();
+        Optional<Book> optionalBook = booksRepository.findById(bookId);
+        if (optionalBook.isPresent()) {
+            Book book = optionalBook.get();
+            comments.addAll(book.getComments());
+        }
+        return comments;
     }
 }

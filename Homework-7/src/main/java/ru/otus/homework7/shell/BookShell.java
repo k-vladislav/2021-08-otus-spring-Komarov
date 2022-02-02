@@ -19,5 +19,6 @@ public interface BookShell {
 
 
     void addCommentForBook(long bookId, String comment);
+    void showCommentsForBook(long bookId);
 
 }
