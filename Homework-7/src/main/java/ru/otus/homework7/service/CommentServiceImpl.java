@@ -36,7 +36,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true) //todo Как работает readOnly=true? https://vladmihalcea.com/spring-read-only-transaction-hibernate-optimization/
     public List<Comment> getCommentsForBook(long bookId) {
         List<Comment> comments = new ArrayList<>();
         Optional<Book> optionalBook = booksRepository.findById(bookId);
