@@ -1,8 +1,3 @@
-**Домашнее задание**
+Homework-4: advanced Spring configuration
 
-Перенести приложение для тестирования студентов на Spring Shell
-
-**Цель**   
-Использовать Spring Shell для проведения опроса
-
-Это домашнее задание выполняется на основе предыдущего (Homework-3)
+Quiz app from HW3 with Spring Shell

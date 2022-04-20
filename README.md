@@ -1,12 +1,12 @@
-Комаров Владислав Викторович  
-Курс Разработчик на Spring Framework  
+Vlad Komarov
+Spring Framework 
 Группа 2021-08  
 
-Домашние задания:  
-1) Homework-1 - создание приложение с помощью Spring IoC
-2) Homework-2 - приложение тестирования с самим тестированием
-3) Homework-3 - приложение тестирования с самим тестированием на Spring Boot
-4) Homework-4 - приложение тестирования с самим тестированием на Spring Boot с Shell
-5) Homework-5 - Spring JDBC (приложение хранящее информацию о книгах в библиотеке)
-6) Homework-6 - приложение хранящее информацию о книгах в библиотеке на Spring ORM+JPA+Hibernate
-7) Homework-7 - приложение-библиотека на Spring Data JPA
+Домашние задания:
+1) Homework-1: intro
+2) Homework-2: Spring configuration
+3) Homework-3: Spring Boot
+4) Homework-4: advanced Spring configuration
+5) Homework-5: DAO with Spring JDBC
+6) Homework-6: JPQL, Spring ORM, DAO with Spring ORM and JPA
+7) Homework-7: Spring Data JPA

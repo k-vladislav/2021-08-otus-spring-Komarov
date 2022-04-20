@@ -1,3 +1,3 @@
-#Spring Data JPA  
+Homework-7: Spring Data JPA
 
-Приложение-библиотека с Spring Data JPA
+Library app with Spring Data JPA
