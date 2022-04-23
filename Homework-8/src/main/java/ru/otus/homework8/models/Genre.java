@@ -1,31 +1,26 @@
 package ru.otus.homework8.models;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import java.util.Set;
 
-@Setter
 @Getter
-@NoArgsConstructor
-@Entity
-@Table(name = "Genre")
+@Setter
+@Document
 public class Genre {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    @Column(name = "genre", nullable = false, unique = true)
+    @Id
+    private String id;
     private String genre;
+    private Set<Book> books;
 
     public Genre(String genre) {
         this.genre = genre;
     }
 
-    @ManyToMany(mappedBy = "genres")
-    private Set<Book> books;
 
     @Override
     public String toString() {
