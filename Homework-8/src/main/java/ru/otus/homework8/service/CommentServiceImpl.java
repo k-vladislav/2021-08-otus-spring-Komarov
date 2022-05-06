@@ -23,7 +23,7 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public boolean addCommentForBook(long bookId, String comment) {
         boolean result = false;
-        Optional<Book> optionalBook = booksRepository.findById(bookId);
+        Optional<Book> optionalBook = booksRepository.findById((int) bookId);
 
         if (optionalBook.isPresent()) {
             Book book = optionalBook.get();
@@ -36,10 +36,10 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    @Transactional(readOnly = true) //todo Как работает readOnly=true? https://vladmihalcea.com/spring-read-only-transaction-hibernate-optimization/
+    @Transactional(readOnly = true)
     public List<Comment> getCommentsForBook(long bookId) {
         List<Comment> comments = new ArrayList<>();
-        Optional<Book> optionalBook = booksRepository.findById(bookId);
+        Optional<Book> optionalBook = booksRepository.findById((int) bookId);
         if (optionalBook.isPresent()) {
             Book book = optionalBook.get();
             comments.addAll(book.getComments());

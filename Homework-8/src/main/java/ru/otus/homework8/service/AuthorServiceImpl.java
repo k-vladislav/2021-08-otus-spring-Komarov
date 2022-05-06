@@ -23,7 +23,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Transactional
     public boolean addAuthorForBook(long bookId, String lastName) {
         boolean isAuthorAdded = false;
-        Optional<Book> optionalBook = bookRepository.findById(bookId);
+        Optional<Book> optionalBook = bookRepository.findById((int) bookId);
         if (optionalBook.isPresent()) {
             Book book = optionalBook.get();
             book.addAuthor(new Author(lastName));
@@ -37,13 +37,13 @@ public class AuthorServiceImpl implements AuthorService {
     @Transactional
     public boolean deleteAuthorFromBook(long bookId, long authorId) {
         boolean isAuthorDeleted = false;
-        Optional<Book> optionalBook = bookRepository.findById(bookId);
+        Optional<Book> optionalBook = bookRepository.findById((int) bookId);
         if (optionalBook.isPresent()) {
             Book book = optionalBook.get();
             Set<Author> authors = book.getAuthors();
 
             Optional<Author> optionalAuthor = authors.stream()
-                    .filter(author -> authorId == author.getId())
+                    .filter(author -> String.valueOf(authorId).equals(author.getId()))
                     .findFirst();
 
             if (optionalAuthor.isPresent()) {

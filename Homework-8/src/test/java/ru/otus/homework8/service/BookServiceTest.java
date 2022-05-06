@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.shell.jline.InteractiveShellApplicationRunner;
-import org.springframework.shell.jline.ScriptShellApplicationRunner;
 import ru.otus.homework8.dao_repositories.BookRepository;
 import ru.otus.homework8.models.Author;
 import ru.otus.homework8.models.Book;
@@ -18,10 +16,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest(properties = {
-        InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
-        ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false"
-})
 class BookServiceTest {
 
     @Autowired
@@ -39,7 +33,7 @@ class BookServiceTest {
         book.addAuthor(new Author("AUTHOR_TWO"));
         book.addAuthor(new Author("AUTHOR_THREE"));
         Book persistedBook = bookRepository.save(book);
-        bookId = persistedBook.getId();
+        bookId = Long.parseLong(persistedBook.getId());
     }
 
     @Test
@@ -83,7 +77,7 @@ class BookServiceTest {
         boolean isDeletedBook = bookService.delete(bookId);
         assertTrue(isDeletedBook);
 
-        boolean isDeletedBookExists = bookRepository.existsById(bookId);
+        boolean isDeletedBookExists = bookRepository.existsById((int) bookId);
         assertFalse(isDeletedBookExists);
     }
 

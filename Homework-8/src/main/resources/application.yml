@@ -1,12 +1,14 @@
 spring:
-  datasource:
-    url: jdbc:h2:mem:testdb
-  sql:
-    init:
-      mode: always
-  jpa:
-    generate-ddl: false
-    hibernate:
-      ddl-auto: none
-    show-sql: false
-debug: off
+  mongodb:
+    embedded:
+      version: "4.4.1"
+
+mongock:
+  mongo-db:
+    write-concern:
+      journal: false
+    read-concern: local
+  #runner-type: "ApplicationRunner" # default
+  runner-type: "InitializingBean" #чтобы запустить монгок с шелл
+  change-logs-scan-package:
+    - ru.otus.homework8.changelog
